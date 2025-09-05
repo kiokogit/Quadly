@@ -26,8 +26,11 @@ const LandingPage: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       {/* Hero Section */}
       <section className="flex-1 flex flex-col items-center justify-center text-center px-4 py-4">
-        <Logo />
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-200 mb-2">UniQuad</h1>
+        <div>
+          <Logo />
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-200">UniQuad</h1>
+        
+        </div>
         
         <img
           src={"https://cdni.iconscout.com/illustration/premium/thumb/students-talking-to-each-other-illustration-svg-png-download-5979483.png"}
@@ -41,7 +44,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Auth Section */}
-      <section className="flex flex-col items-center px-4 py-6 border-t border-gray-200 dark:border-gray-700">
+      <section className="flex flex-col items-center px-4 ">
         <div className="w-full max-w-xs">
           <input
             type="email"
