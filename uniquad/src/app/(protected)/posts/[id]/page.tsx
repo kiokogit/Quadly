@@ -24,6 +24,15 @@ type Post = {
     comments: Comment[];
 };
 
+async function getAllPostIds() {
+  // Replace with your real data fetching logic
+  return ["1", "2", "3"];
+}
+
+export async function generateStaticParams() {
+  const ids = await getAllPostIds();
+  return ids.map((id) => ({ id }));
+}
 async function fetchPost(id: string): Promise<Post> {
     // Replace with real API call
     return {
