@@ -15,6 +15,7 @@ export default function RootLayout({
             {/* <Splash /> */}
             <main className="">{children}</main>
             {/* </AuthRedirectProvider> */}
+            
         </SessionProvider>
       </body>
     </html>
