@@ -18,12 +18,21 @@ import {
 export default function Header() {
   const { data: session } = useSession()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
-  const dropdownRef: any = useRef(null)
+  const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
-        setIsDropdownOpen(false)
+    interface DropdownItem {
+      icon?: React.ComponentType<{ size?: number }>
+      label?: string
+      href?: string
+      action?: () => void
+      className?: string
+      type?: 'divider'
+    }
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      setIsDropdownOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Heart, MessageCircle, Users, Calendar, MapPin, MoreHorizontal, User, Share, Share2Icon, Bookmark } from 'lucide-react';
+import { Heart, MessageCircle, Users, Calendar, MapPin, MoreHorizontal, User,Share2Icon, Bookmark } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 
@@ -341,7 +341,7 @@ const EventsFeed: React.FC = () => {
         )}
         {!hasMore && events.length > 0 && (
           <div className="text-gray-500 text-center">
-            <p>You've reached the end of the feed</p>
+            <p>Youve reached the end of the feed</p>
           </div>
         )}
       </div>
