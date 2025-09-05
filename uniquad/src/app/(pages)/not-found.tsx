@@ -1,7 +1,7 @@
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 
-export default async function NotFoundPage() {
+export default function NotFoundPage() {
   const { data: session } = useSession()
 
   if (session) {
