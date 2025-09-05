@@ -65,8 +65,9 @@ export default function Header() {
             </button>
 
             {isDropdownOpen && session && (
-              <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
-                {/* User Info Section */}
+              <div className="absolute top-full left-[-16px] mt-2 w-64 bg-white dark:bg-gray-900 rounded-md shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+                  <div className="absolute -top-2 left-6 w-4 h-4 bg-white dark:bg-gray-900 border-l border-t border-gray-200 dark:border-gray-700 rotate-45"></div>
+
                 <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
                   <div className="flex items-center gap-3">
                     {session.user?.image ? (
