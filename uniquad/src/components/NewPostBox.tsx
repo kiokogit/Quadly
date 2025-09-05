@@ -1,6 +1,6 @@
 "use client"
 
-import { Calendar, MapPin, User, Image as ImageIcon } from "lucide-react"
+import { Calendar, MapPin, User, Image as ImageIcon, Plus, CalendarPlus, MapPinPlus, ImagePlusIcon } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
 
@@ -10,10 +10,13 @@ export default function NewEventBox() {
   const [location, setLocation] = useState("")
   const [images, setImages] = useState<File[]>([])
   const [text, setText] = useState("")
+ // control which popup is open
+  const [activePopup, setActivePopup] = useState<"date" | "location" | "image" | null>(null)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setImages([...images, e.target.files[0]])
+      setActivePopup(null)
     }
   }
 
@@ -22,6 +25,14 @@ export default function NewEventBox() {
     setImages([])
     setDate("")
     setLocation("")
+  }
+
+   const handleDateChange = (value: string) => {
+    setDate(value)
+  }
+
+  const handleLocationChange = (value: string) => {
+    setLocation(value)
   }
 
   const handleSubmit = () => {
@@ -34,6 +45,15 @@ export default function NewEventBox() {
     // TODO: submit logic
     handleCancel()
   }
+   const formatEventTime = (date: Date) => {
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit'
+    });
+  };
 
   return (
     <div className="flex flex-col w-full mb-4">
@@ -52,10 +72,10 @@ export default function NewEventBox() {
         </div>
 
         {/* Input area */}
-        <div className="flex-1 flex flex-col space-y-3">
+        <div className="flex-1 flex flex-col">
           {/* Event text */}
           <textarea
-            placeholder="Tell us where it is happening... 🎉"
+            placeholder="Share it with comrades... 🎉"
             className="w-full resize-none p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
             rows={2}
             value={text}
@@ -77,43 +97,76 @@ export default function NewEventBox() {
             </div>
           )}
 
-          {/* Extra inputs */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-4 space-y-2 sm:space-y-0">
-            {/* Date */}
-            <div className="flex items-center w-full sm:w-auto border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-800">
-              <Calendar className="w-4 h-4 text-gray-500 mr-2" />
-              <input
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                className="w-full focus:outline-none dark:text-gray-100"
-              />
-            </div>
+         {/* Event Details */}
+           <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 mt-1 mb-3">
+             {date && <div className="flex items-center space-x-1">
+               <Calendar className="w-4 h-4" />
+               <span>{formatEventTime(new Date(date))}</span>
+             </div>}
+             {location && <div className="flex items-center space-x-1">
+               <MapPin className="w-4 h-4" />
+               <span>{location}</span>
+             </div>}
+           </div>
 
-            {/* Location */}
-            <div className="flex items-center w-full sm:w-auto border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-800">
-              <MapPin className="w-4 h-4 text-gray-500 mr-2" />
-              <input
-                type="text"
-                placeholder="Location"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                className="w-full focus:outline-none dark:text-gray-100"
-              />
-            </div>
+          <div className="flex flex-row gap-4 justify-left text-gray-600 dark:text-gray-400">
+            {/* Date picker icon */}
+            <button
+              type="button"
+              onClick={() => setActivePopup(activePopup === "date" ? null : "date")}
+              className="rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <CalendarPlus className="w-5 h-5" />
+            </button>
 
-            {/* Image upload */}
-            <label className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-gray-50 dark:bg-gray-800 cursor-pointer">
-              <ImageIcon className="w-6 h-6 text-gray-500 " />
+            {/* Location icon */}
+            <button
+              type="button"
+              onClick={() => setActivePopup(activePopup === "location" ? null : "location")}
+              className="rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+            >
+              <MapPinPlus className="w-5 h-5" />
+            </button>
+
+            {/* Image upload icon */}
+            <label className="rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+              <ImagePlusIcon className="w-5 h-5" />
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageChange}
                 className="hidden"
               />
-              
             </label>
           </div>
+
+          {/* Popup inputs */}
+          {activePopup === "date" && (
+            <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 bg-gray-50 dark:bg-gray-800 mt-2">
+              <input
+                type="datetime-local"
+                value={date}
+                onChange={(e) => handleDateChange(e.target.value)}
+                onBlur={(e) => setActivePopup(null)}
+                className="focus:outline-none bg-transparent text-sm dark:text-gray-100 w-full"
+              />
+            </div>
+          )}
+
+          {activePopup === "location" && (
+            <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 bg-gray-50 dark:bg-gray-800 mt-2">
+              <input
+                type="text"
+                placeholder="Enter location..."
+                value={location}
+                onChange={(e) => handleLocationChange(e.target.value)}
+                onBlur={(e) => setActivePopup(null)} // closes after typing
+                autoFocus
+                className="focus:outline-none bg-transparent text-sm dark:text-gray-100 w-full"
+              />
+            </div>
+          )}
+
 
           {/* Action buttons */}
           {(text.trim() !== "" || images.length > 0) && (
