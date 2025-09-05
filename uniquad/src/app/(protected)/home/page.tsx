@@ -32,11 +32,29 @@ const EventCard: React.FC<{ event: Event; onLike: (id: string) => void; onAttend
   onAttend 
 }) => {
   const formatTime = (date: Date) => {
-    return new Intl.RelativeTimeFormat('en', { numeric: 'auto' }).format(
-      Math.floor((date.getTime() - Date.now()) / (1000 * 60 * 60 * 24)),
-      'day'
-    );
-  };
+  const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" })
+  const diffInSeconds = Math.floor((date.getTime() - Date.now()) / 1000)
+
+  const divisions: { amount: number; name: Intl.RelativeTimeFormatUnit }[] = [
+    { amount: 60, name: "second" },
+    { amount: 60, name: "minute" },
+    { amount: 24, name: "hour" },
+    { amount: 7, name: "day" },
+    { amount: 4.34524, name: "week" },
+    { amount: 12, name: "month" },
+    { amount: Number.POSITIVE_INFINITY, name: "year" },
+  ]
+
+  let duration = diffInSeconds
+  for (let i = 0; i < divisions.length; i++) {
+    const division = divisions[i]
+    if (Math.abs(duration) < division.amount) {
+      return rtf.format(Math.round(duration), division.name)
+    }
+    duration /= division.amount
+  }
+}
+
 
   const formatEventTime = (date: Date) => {
     return date.toLocaleDateString('en-US', {
@@ -82,11 +100,13 @@ const EventCard: React.FC<{ event: Event; onLike: (id: string) => void; onAttend
       <small className="font-semibold text-xs text-gray-900 dark:text-gray-100">
         {event.userName}
       </small>
-      <small className="text-sm text-gray-500 dark:text-gray-400">
-        <i className="text-xs text-gray-500 dark:text-gray-400 font-normal">
-          @{event.userId}
-        </i>{" "}
-        {formatTime(event.createdAt)}
+      <small className="text-xs mt-1 text-gray-500 dark:text-gray-400">
+        <i className="text-xs font-normal">
+            @{event.userId.length > 8 ? event.userId.slice(0, 8) + "…" : event.userId}
+        </i>
+        <span className="mx-1">•</span>
+        <i className="text-xs font-normal">{formatTime(event.createdAt)}</i>
+        
       </small>
     </div>
   </div>
