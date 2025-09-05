@@ -1,0 +1,188 @@
+"use client"
+
+import { signIn, signOut, useSession } from "next-auth/react"
+import { useState, useRef, useEffect } from "react"
+import Link from "next/link"
+import Logo from "./logo"
+import { 
+  ChevronDown, 
+  User, 
+  Settings, 
+  LogOut,
+  Bell,
+  HelpCircle,
+  Home,
+  InboxIcon
+} from 'lucide-react'
+
+export default function Header() {
+  const { data: session } = useSession()
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const dropdownRef: any = useRef(null)
+
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  const dropdownItems = [
+    { icon: Home, label: 'Home', href: '/home', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+    { icon: User, label: 'Profile', href: '/profile', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+    { icon: Settings, label: 'Settings', href: '/settings', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+    { icon: Bell, label: 'Notifications', href: '/notifications', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+    { icon: InboxIcon, label: 'Messages', href: '/direct-messages', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+    { icon: HelpCircle, label: 'Help & Support', href: '/help', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+    { type: 'divider' },
+    { icon: LogOut, label: 'Sign out', action: () => signOut(), className: 'hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400' }
+  ]
+
+  return (
+    <header className="fixed z-30 w-full">
+      <div className="mx-auto max-w-lg">
+        <div className="relative flex h-14 items-center justify-between gap-6 bg-white/90 dark:bg-gray-900/90 px-4 shadow-lg shadow-black/[0.03] backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(var(--color-gray-100),var(--color-gray-200))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] dark:before:[background:linear-gradient(var(--color-gray-800),var(--color-gray-700))_border-box]">
+          
+          {/* Site branding with dropdown */}
+          <div className="relative" ref={dropdownRef}>
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors -ml-2"
+            >
+              <Logo />
+              {session && (
+                <ChevronDown 
+                  size={16} 
+                  className={`text-gray-500 dark:text-gray-400 transition-transform duration-200 ${
+                    isDropdownOpen ? 'rotate-180' : ''
+                  }`} 
+                />
+              )}
+            </button>
+
+            {isDropdownOpen && session && (
+              <div className="absolute top-full left-0 mt-2 w-64 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 py-2 z-50">
+                {/* User Info Section */}
+                <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
+                  <div className="flex items-center gap-3">
+                    {session.user?.image ? (
+                      <img
+                        src={session.user.image}
+                        alt="avatar"
+                        className="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-gray-700"
+                      />
+                    ) : (
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
+                        {session.user?.name?.[0]}
+                      </div>
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
+                        {session.user?.name || "User"}
+                      </p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                        {session.user?.email || "user@example.com"}
+                      </p>
+                    </div>
+                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
+                  </div>
+                </div>
+
+                {/* Menu Items */}
+                <div className="py-1">
+                  {dropdownItems.map((item: any, index) => {
+                    if (item.type === 'divider') {
+                      return <div key={index} className="border-t border-gray-100 dark:border-gray-700 my-1" />
+                    }
+
+                    if (item.href) {
+                      return (
+                        <Link
+                          key={index}
+                          href={item.href}
+                          onClick={() => setIsDropdownOpen(false)}
+                          className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors text-gray-700 dark:text-gray-300 ${item.className}`}
+                        >
+                          <item.icon size={16} />
+                          <span>{item.label}</span>
+                        </Link>
+                      )
+                    }
+
+                    return (
+                      <button
+                        key={index}
+                        onClick={() => {
+                          item.action()
+                          setIsDropdownOpen(false)
+                        }}
+                        className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors text-gray-700 dark:text-gray-300 ${item.className}`}
+                      >
+                        <item.icon size={16} />
+                        <span>{item.label}</span>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Desktop nav */}
+          <ul className="flex-1 items-center justify-center gap-6 flex text-sm md:text-base">
+            <li>
+              <Link
+                href="/home"
+                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              >
+                Explore
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/discover"
+                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              >
+                Discover
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/groups"
+                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              >
+                Groups
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/chats"
+                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+              >
+                Chats
+              </Link>
+            </li>
+          </ul>
+
+          {/* Desktop auth buttons */}
+          <ul className="hidden items-center gap-3 md:flex">
+            <div className="flex items-center gap-2">
+              <div className="relative">
+                <Bell 
+                  size={20} 
+                  className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 cursor-pointer transition-colors" 
+                />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  3
+                </span>
+              </div>
+            </div>
+          </ul>
+        </div>
+      </div>
+    </header>
+  )
+}
