@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Heart, MessageCircle, Users, Calendar, MapPin, MoreHorizontal, User,Share2Icon, Bookmark, Image as ImageIcon} from 'lucide-react';
+import { Heart, MessageCircle, Users, Calendar, MapPin, MoreHorizontal, User,Share2Icon, Bookmark} from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import NewEventBox from '@/components/NewPostBox';

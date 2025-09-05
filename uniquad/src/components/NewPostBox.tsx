@@ -1,6 +1,6 @@
 "use client"
 
-import { Calendar, MapPin, User, Image as ImageIcon, Plus, CalendarPlus, MapPinPlus, ImagePlusIcon } from "lucide-react"
+import { Calendar, MapPin, User, CalendarPlus, MapPinPlus, ImagePlusIcon } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
 
@@ -147,7 +147,7 @@ export default function NewEventBox() {
                 type="datetime-local"
                 value={date}
                 onChange={(e) => handleDateChange(e.target.value)}
-                onBlur={(e) => setActivePopup(null)}
+                onBlur={() => setActivePopup(null)}
                 className="focus:outline-none bg-transparent text-sm dark:text-gray-100 w-full"
               />
             </div>
@@ -160,7 +160,7 @@ export default function NewEventBox() {
                 placeholder="Enter location..."
                 value={location}
                 onChange={(e) => handleLocationChange(e.target.value)}
-                onBlur={(e) => setActivePopup(null)} // closes after typing
+                onBlur={() => setActivePopup(null)} // closes after typing
                 autoFocus
                 className="focus:outline-none bg-transparent text-sm dark:text-gray-100 w-full"
               />
