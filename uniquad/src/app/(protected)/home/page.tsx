@@ -1,8 +1,9 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { Heart, MessageCircle, Users, Calendar, MapPin, MoreHorizontal, User,Share2Icon, Bookmark } from 'lucide-react';
+import { Heart, MessageCircle, Users, Calendar, MapPin, MoreHorizontal, User,Share2Icon, Bookmark, Image as ImageIcon} from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
+import NewEventBox from '@/components/NewPostBox';
 
 // Mock event data structure
 interface Event {
@@ -187,7 +188,7 @@ const EventsFeed: React.FC = () => {
   const [page, setPage] = useState(1);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const loadingRef = useRef<HTMLDivElement | null>(null);
-
+   
   // Mock data generator
   const generateMockEvents = (pageNum: number, count: number = 10): Event[] => {
     const events: Event[] = [];
@@ -302,21 +303,7 @@ const EventsFeed: React.FC = () => {
     <div className="max-w-lg mx-auto">
        <div className="border-b border-t border-r border-l border-gray-200 dark:border-gray-800 p-4 transition-shadow">
       {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-            {session  && session?.user ?(
-              <img src={session.user.image || ""} alt={""} className="w-full h-full rounded-full object-cover" />
-            ) : (
-              <User className="w-5 h-5 text-gray-600" />
-            )}
-          </div>
-          <div className='flex flex-col'>
-            {/* <small className="font-semibold text-xs text-gray-900">{session?.user?.name}</small> */}
-            <textarea placeholder='What is going on'/>
-          </div>
-        </div>
-      </div>
+      <NewEventBox />
 
     </div>
       {events.map(event => (
@@ -351,11 +338,9 @@ const EventsFeed: React.FC = () => {
 
 const ForYouPage: React.FC = () => {
   return (
-    <div className="min-h-screen">
-      <div className="max-w-2xl mx-auto py-6">
+    
         <EventsFeed />
-      </div>
-    </div>
+      
   );
 };
 

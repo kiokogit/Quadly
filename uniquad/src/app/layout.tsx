@@ -9,13 +9,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="text-gray-900 dark:text-gray-100 bg-white dark:bg-orange-900 transition-colors duration-300">
+      <body className="min-h-screen text-gray-900 dark:text-gray-100 bg-white dark:bg-orange-900 transition-colors duration-300">
         <SessionProvider>
           {/* <AuthRedirectProvider> */}
             {/* <Splash /> */}
             <main className="">{children}</main>
             {/* </AuthRedirectProvider> */}
-            
+
         </SessionProvider>
       </body>
     </html>
