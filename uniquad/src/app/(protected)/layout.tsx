@@ -4,7 +4,6 @@ import Footer from "@/components/footer"
 
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
-import { useState } from "react"
 
 export default function RootLayout({
   children,

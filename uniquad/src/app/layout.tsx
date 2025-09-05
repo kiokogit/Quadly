@@ -1,8 +1,6 @@
 "use client"
 import { SessionProvider } from "next-auth/react"
 import "./globals.css"
-import AuthRedirectProvider from "@/components/AuthRedirectProvider"
-import Splash from "@/components/Splash"
 
 export default function RootLayout({
   children,

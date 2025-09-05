@@ -5,7 +5,6 @@ import Logo from "@/components/logo"
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 import { useState } from "react"
-import MainImage from '@/assets/main.png'
 
 const LandingPage: React.FC = () => {
   const { data: session } = useSession()

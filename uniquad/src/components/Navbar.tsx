@@ -1,6 +1,6 @@
 "use client"
 
-import { signIn, signOut, useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
 import Logo from "./logo"
@@ -21,14 +21,6 @@ export default function Header() {
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    interface DropdownItem {
-      icon?: React.ComponentType<{ size?: number }>
-      label?: string
-      href?: string
-      action?: () => void
-      className?: string
-      type?: 'divider'
-    }
 
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -102,7 +94,7 @@ export default function Header() {
 
                 {/* Menu Items */}
                 <div className="py-1">
-                  {dropdownItems.map((item: any, index) => {
+                  {dropdownItems.map((item, index) => {
                     if (item.type === 'divider') {
                       return <div key={index} className="border-t border-gray-100 dark:border-gray-700 my-1" />
                     }
@@ -115,7 +107,7 @@ export default function Header() {
                           onClick={() => setIsDropdownOpen(false)}
                           className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors text-gray-700 dark:text-gray-300 ${item.className}`}
                         >
-                          <item.icon size={16} />
+                          {item.icon && <item.icon size={16} />}
                           <span>{item.label}</span>
                         </Link>
                       )
@@ -125,12 +117,12 @@ export default function Header() {
                       <button
                         key={index}
                         onClick={() => {
-                          item.action()
+                          if (item.action) item.action()
                           setIsDropdownOpen(false)
                         }}
                         className={`w-full flex items-center gap-3 px-4 py-2 text-sm transition-colors text-gray-700 dark:text-gray-300 ${item.className}`}
                       >
-                        <item.icon size={16} />
+                        {item.icon && <item.icon size={16} />}
                         <span>{item.label}</span>
                       </button>
                     )
