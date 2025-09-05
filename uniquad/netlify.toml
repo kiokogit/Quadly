@@ -1,7 +1,3 @@
 [build]
   command = "next build"
   publish = ".next"
-  functions = ".netlify/functions"
-
-[[plugins]]
-  package = "@netlify/next"
