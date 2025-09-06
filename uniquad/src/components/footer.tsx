@@ -13,7 +13,7 @@ export default function Footer({ border = false }: { border?: boolean }) {
           <div className="space-y-2 sm:col-span-12 lg:col-span-4">
             <div className="flex items-center gap-2">
               <Logo />
-              <span className="hidden text-lg font-extrabold tracking-tight bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent md:inline">
+              <span className="hidden text-lg font-extrabold tracking-tight text-gray-900 dark:text-gray-200 md:inline">
                 UniQuad
               </span>
             </div>
