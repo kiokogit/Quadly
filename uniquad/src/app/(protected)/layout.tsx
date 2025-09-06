@@ -43,8 +43,8 @@ export default function RootLayout({
               <div className="text-xs text-gray-500">Ads go here...</div>
             </section>
             <section>
-              <h2 className="text-sm font-semibold mb-2">Suggested Groups</h2>
-              <div className="text-xs text-gray-500">Groups go here...</div>
+              <h2 className="text-sm font-semibold mb-2">Suggested Events</h2>
+              <div className="text-xs text-gray-500">Events go here...</div>
             </section>
            
           </div>

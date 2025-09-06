@@ -1,7 +1,5 @@
 "use client";
 
-import { PlusCircleIcon } from "lucide-react";
-
 export default function DiscoverPage() {
   return (
     <div className="max-w-lg mx-auto px-4 pt-4">
