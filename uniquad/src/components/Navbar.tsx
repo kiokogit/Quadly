@@ -3,6 +3,8 @@
 import { signOut, useSession } from "next-auth/react"
 import { useState, useRef, useEffect } from "react"
 import Link from "next/link"
+
+import { usePathname } from "next/navigation";
 import Logo from "./logo"
 import { 
   ChevronDown, 
@@ -19,6 +21,8 @@ export default function Header() {
   const { data: session } = useSession()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const pathname = usePathname();
+
 
   useEffect(() => {
 
@@ -138,7 +142,9 @@ export default function Header() {
             <li>
               <Link
                 href="/home"
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
+        ${pathname === '/home' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
+      `}
               >
                 Explore
               </Link>
@@ -146,7 +152,9 @@ export default function Header() {
             <li>
               <Link
                 href="/discover"
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
+        ${pathname === '/discover' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
+      `}
               >
                 Discover
               </Link>
@@ -154,16 +162,18 @@ export default function Header() {
             <li>
               <Link
                 href="/groups"
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              >
+                className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
+        ${pathname === '/groups' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
+      `}>
                 Groups
               </Link>
             </li>
             <li>
               <Link
                 href="/chats"
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              >
+                className={`hidden md:flex text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
+        ${pathname === '/chats' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
+      `}>
                 Chats
               </Link>
             </li>
