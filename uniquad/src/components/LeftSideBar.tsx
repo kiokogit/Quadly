@@ -1,12 +1,14 @@
 "use client"
 
 import Footer from "@/components/footer"
-import { signOut } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import { Home, User, Settings, Bell, HelpCircle, LogOut, MessageSquare } from "lucide-react"
 import Logo from "@/components/logo"
 
 
-export default function LeftSideBar({session}: {session: any}) {
+export default function LeftSideBar() {
+
+    const { data: session } = useSession()
       
         if (!session) {
             return <></>
