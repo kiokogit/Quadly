@@ -23,6 +23,7 @@ interface Event {
   createdAt: Date;
   isLiked: boolean;
   isAttending: boolean;
+  bookmarks: number
 }
 
 // EventCard Component
@@ -85,7 +86,7 @@ const EventCard: React.FC<{ event: Event; onLike: (id: string) => void; onAttend
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
   <div className="flex items-center space-x-3">
-    <div className="w-10 h-10 rounded-full flex items-center justify-center">
+    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-600 dark:bg-gray-900">
       {event.userAvatar ? (
         <img 
           src={event.userAvatar} 
@@ -93,7 +94,7 @@ const EventCard: React.FC<{ event: Event; onLike: (id: string) => void; onAttend
           className="w-full h-full rounded-full object-cover" 
         />
       ) : (
-        <User className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+        <User className="w-5 h-5 text-gray-600 dark:text-gray-400 " />
       )}
     </div>
     <div className="flex flex-col">
@@ -125,8 +126,18 @@ const EventCard: React.FC<{ event: Event; onLike: (id: string) => void; onAttend
 
      {/* Event Content */}
 <Link href={`/posts/${event.id}`} className="mb-3">
-  <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100 mb-2">{event.title}</h3>
-  <p className="text-gray-700 dark:text-gray-300 mb-3">{event.description}</p>
+{/* Event Image */}
+  {event.imageUrl && (
+    <div className="rounded-lg overflow-hidden mb-3">
+      <img 
+        src={event.imageUrl} 
+        alt={event.title}
+        className="w-full max-h-64 object-cover"
+      />
+    </div>
+  )}
+  <h3 className="font-bold text-md text-gray-900 dark:text-gray-100 mb-2">{event.title}</h3>
+  <p className="text-gray-700 dark:text-gray-300 mb-3 text-sm">{event.description}</p>
   
   {/* Event Details */}
   <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
@@ -140,16 +151,7 @@ const EventCard: React.FC<{ event: Event; onLike: (id: string) => void; onAttend
     </div>
   </div>
 
-  {/* Event Image */}
-  {event.imageUrl && (
-    <div className="rounded-lg overflow-hidden mb-3">
-      <img 
-        src={event.imageUrl} 
-        alt={event.title}
-        className="w-full h-64 object-cover"
-      />
-    </div>
-  )}
+  
 </Link>
 
 
@@ -184,14 +186,20 @@ const EventCard: React.FC<{ event: Event; onLike: (id: string) => void; onAttend
       <Users className="w-4 h-4" />
       <span className="text-sm">{event.attending}</span>
     </button>
+     <button className={`flex items-center space-x-1 px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors ${
+        event.isAttending 
+          ? 'text-blue-600 bg-blue-50 hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30 dark:hover:bg-blue-900/50' 
+          : 'text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+      }`}>
+      <Bookmark className="w-4 h-4" />
+      <span className="text-sm">{event.bookmarks}</span>
+    </button>
     
     <button className="flex items-center space-x-2 px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors">
       <Share2Icon className="w-4 h-4" />
     </button>
     
-    <button className="flex items-center space-x-2 px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors">
-      <Bookmark className="w-4 h-4" />
-    </button>
+   
   </div>
 </div>
 
@@ -201,7 +209,6 @@ const EventCard: React.FC<{ event: Event; onLike: (id: string) => void; onAttend
 
 // EventsFeed Component
 const EventsFeed: React.FC = () => {
-   const { data: session } = useSession()
   const [events, setEvents] = useState<Event[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -235,7 +242,8 @@ const EventsFeed: React.FC = () => {
         attending: Math.floor(Math.random() * 200),
         createdAt: new Date(Date.now() - Math.random() * 24 * 60 * 60 * 1000), // Last 24 hours
         isLiked: Math.random() > 0.7,
-        isAttending: Math.random() > 0.8
+        isAttending: Math.random() > 0.8,
+        bookmarks:Math.floor(Math.random() * 200)
       });
     }
     

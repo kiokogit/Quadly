@@ -56,7 +56,7 @@ export default function NewEventBox() {
   };
 
   return (
-    <div className="flex flex-col w-full mb-4">
+    <div className="flex flex-col w-full mb-2">
       <div className="flex items-start space-x-3">
         {/* Avatar */}
         <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center overflow-hidden">
@@ -75,8 +75,8 @@ export default function NewEventBox() {
         <div className="flex-1 flex flex-col">
           {/* Event text */}
           <textarea
-            placeholder="Share it with comrades... 🎉"
-            className="w-full resize-none p-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+            placeholder="Tell us, whats cooking?... 🎉"
+            className="w-full text-sm resize-none p-2 border border-gray-200 dark:border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
             rows={2}
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -146,6 +146,7 @@ export default function NewEventBox() {
               <input
                 type="datetime-local"
                 value={date}
+                placeholder="Choose date & time"
                 onChange={(e) => handleDateChange(e.target.value)}
                 onBlur={() => setActivePopup(null)}
                 className="focus:outline-none bg-transparent text-sm dark:text-gray-100 w-full"

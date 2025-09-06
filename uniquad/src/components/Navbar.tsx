@@ -14,7 +14,7 @@ import {
   Bell,
   HelpCircle,
   Home,
-  InboxIcon
+  MessageSquare
 } from 'lucide-react'
 
 export default function Header() {
@@ -40,7 +40,7 @@ export default function Header() {
     { icon: User, label: 'Profile', href: '/profile', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
     { icon: Settings, label: 'Settings', href: '/settings', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
     { icon: Bell, label: 'Notifications', href: '/notifications', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
-    { icon: InboxIcon, label: 'Messages', href: '/direct-messages', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
+    { icon: MessageSquare, label: 'Messages', href: '/direct-messages', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
     { icon: HelpCircle, label: 'Help & Support', href: '/help', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
     { type: 'divider' },
     { icon: LogOut, label: 'Sign out', action: () => signOut(), className: 'hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400' }
@@ -49,13 +49,13 @@ export default function Header() {
   return (
     <header className="fixed z-30 w-full">
       <div className="mx-auto max-w-lg">
-        <div className="relative flex h-14 items-center justify-between gap-6 bg-white/90 dark:bg-gray-900/90 px-4 shadow-lg shadow-black/[0.03] backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(var(--color-gray-100),var(--color-gray-200))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] dark:before:[background:linear-gradient(var(--color-gray-800),var(--color-gray-700))_border-box]">
+        <div className="relative flex h-14 items-center justify-between bg-white/90 dark:bg-gray-900/90 px-4 shadow-lg shadow-black/[0.03] backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(var(--color-gray-100),var(--color-gray-200))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] dark:before:[background:linear-gradient(var(--color-gray-800),var(--color-gray-700))_border-box]">
           
           {/* Site branding with dropdown */}
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex md:hidden items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors -ml-2"
+              className="flex md:hidden items-center gap-1 hover:bg-gray-50 dark:hover:bg-gray-700 p-1 rounded-lg transition-colors -ml-2 scale-90"
             >
               <Logo />
               {session && (
@@ -138,50 +138,60 @@ export default function Header() {
           </div>
 
           {/* Desktop nav */}
-          <ul className="flex-1 items-center justify-center gap-6 flex text-sm md:text-base">
+          <ul className="flex-1 items-center justify-center gap-3 flex text-xs md:text-sm font-semibold">
             <li>
               <Link
                 href="/home"
                 className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
-        ${pathname === '/home' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
-      `}
+                  ${pathname === '/home' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
+                `}
               >
-                Explore
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/events"
+                className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
+                ${pathname === '/events' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
+              `}
+              >
+                Events
               </Link>
             </li>
             <li>
               <Link
                 href="/discover"
                 className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
-        ${pathname === '/discover' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
-      `}
+                  ${pathname === '/discover' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
+                `}
               >
                 Discover
               </Link>
             </li>
             <li>
               <Link
-                href="/groups"
+                href="/my-campus"
                 className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
-        ${pathname === '/groups' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
-      `}>
-                Groups
+                  ${pathname === '/my-campus' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
+                `}>
+                MyCampus
               </Link>
             </li>
             <li>
               <Link
-                href="/chats"
-                className={`hidden md:flex text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
-        ${pathname === '/chats' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
-      `}>
-                Chats
+                href="/channels"
+                className={`hidden md:inline text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
+                  ${pathname === '/channels' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
+                `}>
+                Channels
               </Link>
             </li>
           </ul>
 
           {/* Desktop auth buttons */}
-          <ul className="hidden items-center gap-3 md:flex">
-            <div className="flex items-center gap-2">
+          <ul className="items-center flex">
+            <div className="flex items-center gap-4">
               <div className="relative">
                 <Bell 
                   size={20} 
@@ -189,6 +199,15 @@ export default function Header() {
                 />
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                   3
+                </span>
+              </div>
+               <div className="relative">
+                <MessageSquare 
+                  size={20} 
+                  className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 cursor-pointer transition-colors" 
+                />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  1
                 </span>
               </div>
             </div>
