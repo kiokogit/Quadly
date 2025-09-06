@@ -76,7 +76,7 @@ export default function NewEventBox() {
           {/* Event text */}
           <textarea
             placeholder="Tell us, whats cooking?... 🎉"
-            className="w-full text-sm resize-none p-2 border border-gray-200 dark:border-gray-800 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none dark:text-gray-100"
+            className="w-full text-sm resize-none p-2 border border-gray-200 dark:border-gray-800 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none dark:text-gray-100"
             rows={2}
             value={text}
             onChange={(e) => setText(e.target.value)}
