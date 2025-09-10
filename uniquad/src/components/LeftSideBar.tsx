@@ -34,7 +34,7 @@ export default function LeftSideBar() {
         <aside
           className="hidden md:col-span-3 md:flex flex-col mt-[-12px] sticky top-0 h-[calc(100vh-3.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"
           >
-          <div className="px-4 py-6  border-gray-100 dark:border-gray-700">
+          <div className="px-4 border-gray-100 dark:border-gray-700">
                 <div className="flex items-center gap-3">
                   {session.user?.image ? (
                     <img
@@ -59,7 +59,7 @@ export default function LeftSideBar() {
                 </div>
           </div>
           
-        <nav className="px-4 flex flex-col gap-2 mt-4">
+        <nav className="px-4 flex flex-col gap-2 mt-6">
           {leftSideBarItems.map((item, idx) =>
             item.type === "divider" ? (
               <hr key={idx} className="my-2 border-gray-200 dark:border-gray-700" />

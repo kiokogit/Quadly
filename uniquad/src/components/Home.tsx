@@ -1,6 +1,6 @@
 "use client"
-
-import { Users, Group, Calendar, Megaphone, MoreHorizontal, CalendarCheck2Icon } from "lucide-react"
+import { FaSearchengin, FaStarHalfAlt } from "react-icons/fa"
+import { Users, Group, Calendar, Megaphone, MoreHorizontal, CalendarCheck2Icon, StarHalfIcon } from "lucide-react"
 import { motion } from "framer-motion"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
@@ -35,20 +35,24 @@ export default function YouPage() {
       
       <section className="flex gap-6 justify-evenly text-center">
        
-        <Link href='/connect' className="flex flex-col items-center">
+        <Link href='/feed' className="flex flex-col items-center">
           <Users className="w-6 h-6 text-blue-500 mb-1" />
-          <p className="text-sm text-gray-500 dark:text-gray-400">myConnections</p>
-          <p className="text-lg font-semibold">120</p>
+         <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                myPosts <span className="text-xl leading-none">·</span> 236
+            </p>
         </Link>
-        <Link href='/connect' className="flex flex-col items-center">
-          <Group className="w-6 h-6 text-green-500 mb-1" />
-          <p className="text-sm text-gray-500 dark:text-gray-400">myGroups</p>
-          <p className="text-lg font-semibold">8</p>
+        <Link href="/connect" className="flex flex-col items-center">
+            <FaStarHalfAlt className="w-6 h-6 text-green-500 mb-1" />
+            <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                myReviews <span className="text-xl leading-none">·</span> 12
+            </p>
+
         </Link>
          <Link href='/events' className="flex flex-col items-center">
           <CalendarCheck2Icon className="w-6 h-6 text-orange-500 mb-1" />
-          <p className="text-sm text-gray-500 dark:text-gray-400">savedEvents</p>
-          <p className="text-lg font-semibold">23</p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+                savedEvents <span className="text-xl leading-none">·</span> 15
+            </p>
         </Link>
         
       </section>

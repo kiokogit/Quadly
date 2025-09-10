@@ -50,24 +50,24 @@ export default function Header() {
   ]
 
   const generalNavLinks = [
-    { icon: Home, label: 'Home', href: '/home'},
+    { icon: Home, label: 'You', href: '/home'},
     {icon: CalendarHeartIcon, label: 'Events', href:'/events'},
     {icon: FaSearchengin, label: 'Discover', href:'/discover'},
-    {icon: FaPeopleGroup, label: 'Forum', href:'/forum'},
+    {icon: FaPeopleGroup, label: 'Feed', href:'/forum'},
     {icon: FaStarHalfAlt, label: 'Reviews', href:'/reviews'},
   ]
 
   return (
-    <header className="fixed z-30 w-full pt-2 bg-white/90 dark:bg-gray-900/90 px-4 shadow-lg shadow-black/[0.03] backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(var(--color-gray-100),var(--color-gray-200))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] dark:before:[background:linear-gradient(var(--color-gray-800),var(--color-gray-700))_border-box]">
+    <header className="fixed z-30 w-full ">
       <div className="mx-auto max-w-lg">
          {/* Site branding with dropdown */}
-          <div className="flex flex-col">
+          <div className="flex flex-col pt-2 bg-white/90 dark:bg-gray-900/90 px-4 shadow-lg shadow-black/[0.03] backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(var(--color-gray-100),var(--color-gray-200))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] dark:before:[background:linear-gradient(var(--color-gray-800),var(--color-gray-700))_border-box]">
           <div className="relative flex h-8 items-center justify-between">
             
-          <div className="relative " ref={dropdownRef}>
+          <div className="relative text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors scale-100"
+              className="flex items-center gap-2 cursor-pointer hover:bg-transparent rounded-lg transition-colors scale-100 "
             >
               <Logo />
                 <div className="font-semibold">UniQuad</div>
@@ -183,7 +183,7 @@ export default function Header() {
                           className={`text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors relative pb-1 `}>
                                 <div className={`${pathname === item.href ? 'text-orange-600':''} flex flex-col items-center`}>
                                   {item.icon && <item.icon size={16} />}
-                                   <span className="text-xs">{item.label}</span>
+                                   <span className="text-xs mt-1">{item.label}</span>
                                 </div>
                         </Link>
               })}
