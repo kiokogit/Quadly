@@ -48,7 +48,7 @@ const LandingPage: React.FC = () => {
         <div className="w-full max-w-xs">
           <input
             type="email"
-            placeholder="Enter School email"
+            placeholder="Enter your email"
             value={schoolEmail}
             onChange={(e) => setSchoolEmail(e.target.value)}
             className="w-full px-3 py-2 text-sm border border-gray-300 rounded mb-2 focus:outline-none focus:ring-1 focus:ring-orange-500"

@@ -14,8 +14,11 @@ import {
   Bell,
   HelpCircle,
   Home,
-  MessageSquare
+  MessageSquare,
+  CalendarHeartIcon,
 } from 'lucide-react'
+import { FaSearchengin, FaStarHalfAlt } from "react-icons/fa";
+import { FaPeopleGroup } from "react-icons/fa6";
 
 export default function Header() {
   const { data: session } = useSession()
@@ -46,6 +49,15 @@ export default function Header() {
     { icon: LogOut, label: 'Sign out', action: () => signOut(), className: 'hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400' }
   ]
 
+  const generalNavLinks = [
+    { icon: Home, label: 'Home', href: '/home'},
+    {icon: CalendarHeartIcon, label: 'Events', href:'/events'},
+    {icon: FaSearchengin, label: 'Discover', href:'/discover'},
+    {icon: FaPeopleGroup, label: 'Forum', href:'/forum'},
+    {icon: FaStarHalfAlt, label: 'Reviews', href:'/reviews'},
+    
+  ]
+
   return (
     <header className="fixed z-30 w-full">
       <div className="mx-auto max-w-lg">
@@ -55,7 +67,7 @@ export default function Header() {
           <div className="relative" ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex md:hidden items-center gap-1 hover:bg-gray-50 dark:hover:bg-gray-700 p-1 rounded-lg transition-colors -ml-2 scale-90"
+              className="flex md:hidden items-center gap-0 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors -ml-2 scale-90"
             >
               <Logo />
               {session && (
@@ -138,55 +150,18 @@ export default function Header() {
           </div>
 
           {/* Desktop nav */}
-          <ul className="flex-1 items-center justify-center gap-3 flex text-xs md:text-sm font-semibold">
-            <li>
-              <Link
-                href="/home"
-                className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
-                  ${pathname === '/home' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
-                `}
-              >
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/events"
-                className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
-                ${pathname === '/events' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
-              `}
-              >
-                Events
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/discover"
-                className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
-                  ${pathname === '/discover' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
-                `}
-              >
-                Discover
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/my-campus"
-                className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
-                  ${pathname === '/my-campus' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
-                `}>
-                MyCampus
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/channels"
-                className={`hidden md:inline text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1
-                  ${pathname === '/channels' ? "after:content-[''] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-orange-600 dark:after:bg-orange-400" : ""}
-                `}>
-                Channels
-              </Link>
-            </li>
+          <ul className="flex-1 items-center justify-center gap-3 md:gap-8 flex text-xs md:text-sm font-semibold">
+            {generalNavLinks.map((item, index) => {
+                   return <Link
+                          key={index}
+                          href={item.href || "#"}
+                          className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1 `}>
+                                <div className={`${pathname === item.href ? 'text-orange-600':''} flex flex-col items-center`}>
+                                  {item.icon && <item.icon size={16} />}
+                                   <span className="text-xs">{item.label}</span>
+                                </div>
+                        </Link>
+              })}
           </ul>
 
           {/* Desktop auth buttons */}
@@ -201,7 +176,7 @@ export default function Header() {
                   3
                 </span>
               </div>
-               <div className="relative">
+               <div className="hidden md:relative">
                 <MessageSquare 
                   size={20} 
                   className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 cursor-pointer transition-colors" 
