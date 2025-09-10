@@ -175,3 +175,5 @@ const EventsFeed: React.FC = () => {
     </div>
   );
 };
+
+export default EventsFeed

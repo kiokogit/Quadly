@@ -150,12 +150,12 @@ export default function Header() {
           </div>
 
           {/* Desktop nav */}
-          <ul className="flex-1 items-center justify-center gap-3 md:gap-8 flex text-xs md:text-sm font-semibold">
+          <ul className="flex-1 items-center justify-evenly gap-3 md:gap-8 flex text-xs md:text-sm font-semibold">
             {generalNavLinks.map((item, index) => {
                    return <Link
                           key={index}
                           href={item.href || "#"}
-                          className={`text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors relative pb-1 `}>
+                          className={`text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors relative pb-1 `}>
                                 <div className={`${pathname === item.href ? 'text-orange-600':''} flex flex-col items-center`}>
                                   {item.icon && <item.icon size={16} />}
                                    <span className="text-xs">{item.label}</span>

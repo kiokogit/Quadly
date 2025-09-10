@@ -67,10 +67,10 @@ export default function YouPage() {
           {events.map((event) => (
             <motion.div
               key={event.id}
-              whileHover={{ scale: 1.05 }}
-              className="min-w-[150px] border rounded-xl p-3 bg-white dark:bg-gray-900/50 shadow-sm"
+              whileHover={{ scale: 1.01 }}
+              className="min-w-[150px] border border-gray-400 dark:border-gray-700 rounded-xl p-3 shadow-sm"
             >
-              <p className="font-semibold">{event.title}</p>
+              <p className="font-semibold ">{event.title}</p>
               <p className="text-sm text-gray-500 dark:text-gray-400">{event.date}</p>
               <p className="text-xs text-gray-400">{event.location}</p>
             </motion.div>
@@ -93,7 +93,7 @@ export default function YouPage() {
             <motion.div
               key={ad.id}
               whileHover={{ scale: 1.05 }}
-              className="min-w-[175px] border rounded-xl p-4 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-gray-800 dark:to-gray-700 shadow-sm"
+              className="min-w-[175px] border border-gray-400 dark:border-gray-700 rounded-xl p-4 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-gray-800 dark:to-gray-700 shadow-sm"
             >
               <p className="font-semibold">{ad.title}</p>
               <p className="text-sm text-gray-600 dark:text-gray-300">{ad.brand}</p>
