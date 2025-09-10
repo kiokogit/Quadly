@@ -35,13 +35,13 @@ export default function YouPage() {
       
       <section className="flex gap-6 justify-evenly text-center">
        
-        <Link href='/feed' className="flex flex-col items-center">
+        <Link href='/forum' className="flex flex-col items-center">
           <Users className="w-6 h-6 text-blue-500 mb-1" />
          <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                 myPosts <span className="text-xl leading-none">·</span> 236
             </p>
         </Link>
-        <Link href="/connect" className="flex flex-col items-center">
+        <Link href="/reviews" className="flex flex-col items-center">
             <FaStarHalfAlt className="w-6 h-6 text-green-500 mb-1" />
             <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
                 myReviews <span className="text-xl leading-none">·</span> 12

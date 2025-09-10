@@ -50,7 +50,7 @@ export default function Header() {
   ]
 
   const generalNavLinks = [
-    { icon: Home, label: 'You', href: '/home'},
+    { icon: Home, label: 'Home', href: '/home'},
     {icon: CalendarHeartIcon, label: 'Events', href:'/events'},
     {icon: FaSearchengin, label: 'Discover', href:'/discover'},
     {icon: FaPeopleGroup, label: 'Forum', href:'/forum'},
@@ -65,9 +65,14 @@ export default function Header() {
           <div className="relative flex h-8 items-center justify-between">
             
           <div className="relative text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400" ref={dropdownRef}>
+            <Link href={'/home'} className="flex items-center gap-2 cursor-pointer hover:bg-transparent rounded-lg transition-colors scale-100 ">
+              <Logo />
+              <div className="font-semibold">UniQuad</div>
+            </Link>
+            
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex items-center gap-2 cursor-pointer hover:bg-transparent rounded-lg transition-colors scale-100 "
+              className="flex md:hidden items-center gap-2 cursor-pointer md:cursor-normal hover:bg-transparent rounded-lg transition-colors scale-100 "
             >
               <Logo />
                 <div className="font-semibold">UniQuad</div>
