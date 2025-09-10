@@ -55,29 +55,28 @@ export default function Header() {
     {icon: FaSearchengin, label: 'Discover', href:'/discover'},
     {icon: FaPeopleGroup, label: 'Forum', href:'/forum'},
     {icon: FaStarHalfAlt, label: 'Reviews', href:'/reviews'},
-    
   ]
 
   return (
-    <header className="fixed z-30 w-full">
+    <header className="fixed z-30 w-full pt-2 bg-white/90 dark:bg-gray-900/90 px-4 shadow-lg shadow-black/[0.03] backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(var(--color-gray-100),var(--color-gray-200))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] dark:before:[background:linear-gradient(var(--color-gray-800),var(--color-gray-700))_border-box]">
       <div className="mx-auto max-w-lg">
-        <div className="relative flex h-14 items-center justify-between bg-white/90 dark:bg-gray-900/90 px-4 shadow-lg shadow-black/[0.03] backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(var(--color-gray-100),var(--color-gray-200))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] dark:before:[background:linear-gradient(var(--color-gray-800),var(--color-gray-700))_border-box]">
-          
-          {/* Site branding with dropdown */}
-          <div className="relative" ref={dropdownRef}>
+         {/* Site branding with dropdown */}
+          <div className="flex flex-col">
+          <div className="relative flex h-8 items-center justify-between">
+            
+          <div className="relative " ref={dropdownRef}>
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex md:hidden items-center gap-0 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors -ml-2 scale-90"
+              className="flex items-center gap-2 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition-colors scale-100"
             >
               <Logo />
-              {session && (
+                <div className="font-semibold">UniQuad</div>
                 <ChevronDown 
                   size={16} 
                   className={`text-gray-500 dark:text-gray-400 transition-transform duration-200 ${
                     isDropdownOpen ? 'rotate-180' : ''
                   }`} 
                 />
-              )}
             </button>
 
             {isDropdownOpen && session && (
@@ -147,10 +146,36 @@ export default function Header() {
                 </div>
               </div>
             )}
+            
           </div>
-
+          
+           <ul className="items-center flex">
+            <div className="flex items-center gap-8">
+              <div className="relative">
+                <Bell 
+                  size={20} 
+                  className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 cursor-pointer transition-colors" 
+                />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  3
+                </span>
+              </div>
+               <div className="relative">
+                <MessageSquare 
+                  size={20} 
+                  className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 cursor-pointer transition-colors" 
+                />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  1
+                </span>
+              </div>
+            </div>
+          </ul>
+          </div>
+        <div className="relative flex h-14 items-center justify-between">
+          
           {/* Desktop nav */}
-          <ul className="flex-1 items-center justify-evenly gap-3 md:gap-8 flex text-xs md:text-sm font-semibold">
+          <ul className="flex-1 items-center justify-between gap-3 md:gap-8 flex text-xs md:text-sm font-semibold">
             {generalNavLinks.map((item, index) => {
                    return <Link
                           key={index}
@@ -164,29 +189,7 @@ export default function Header() {
               })}
           </ul>
 
-          {/* Desktop auth buttons */}
-          <ul className="items-center flex">
-            <div className="flex items-center gap-4">
-              <div className="relative">
-                <Bell 
-                  size={20} 
-                  className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 cursor-pointer transition-colors" 
-                />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                  3
-                </span>
-              </div>
-               <div className="hidden md:relative">
-                <MessageSquare 
-                  size={20} 
-                  className="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-gray-100 cursor-pointer transition-colors" 
-                />
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                  1
-                </span>
-              </div>
-            </div>
-          </ul>
+          </div>
         </div>
       </div>
     </header>

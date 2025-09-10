@@ -23,14 +23,14 @@ export default function RootLayout({
       <Navbar />
 
       {/* Page grid */}
-      <div className="flex-1 w-full max-w-7xl mx-auto px-0 py-8 grid grid-cols-1 md:grid-cols-12 gap-2">
+      <div className="flex-1 w-full max-w-7xl mx-auto px-0 py-6 grid grid-cols-1 md:grid-cols-12 gap-2">
         
         {/* Left Sidebar */}
        <LeftSideBar />
 
         {/* Main Content */}
         <FloatingFab />
-        <main className="md:col-span-6 max-w-2xl w-full mx-auto py-6">
+        <main className="md:col-span-6 max-w-2xl w-full mx-auto py-16">
           {children}
         </main>
 

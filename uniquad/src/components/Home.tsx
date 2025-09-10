@@ -68,7 +68,7 @@ export default function YouPage() {
             <motion.div
               key={event.id}
               whileHover={{ scale: 1.01 }}
-              className="min-w-[150px] border border-gray-400 dark:border-gray-700 rounded-xl p-3 shadow-sm"
+              className="min-w-[150px] border border-gray-400 dark:border-gray-700 rounded-lg p-3 shadow-sm"
             >
               <p className="font-semibold ">{event.title}</p>
               <p className="text-sm text-gray-500 dark:text-gray-400">{event.date}</p>
@@ -93,7 +93,7 @@ export default function YouPage() {
             <motion.div
               key={ad.id}
               whileHover={{ scale: 1.05 }}
-              className="min-w-[175px] border border-gray-400 dark:border-gray-700 rounded-xl p-4 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-gray-800 dark:to-gray-700 shadow-sm"
+              className="min-w-[175px] border border-gray-400 dark:border-gray-700 rounded-lg p-4 bg-gradient-to-r from-pink-50 to-pink-100 dark:from-gray-800 dark:to-gray-700 shadow-sm"
             >
               <p className="font-semibold">{ad.title}</p>
               <p className="text-sm text-gray-600 dark:text-gray-300">{ad.brand}</p>
@@ -108,7 +108,7 @@ export default function YouPage() {
         <h2 className="flex items-center text-lg font-bold text-gray-800 dark:text-gray-100 mb-3">
           Latest Posts
         </h2>
-        <Link href='/forum' className="text-orange-500 text-sm underline">View Latest</Link>
+        <Link href='/forum' className="text-orange-500 text-sm underline">See all</Link>
         </div>
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
           {articles.map((article) => (
