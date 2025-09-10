@@ -150,7 +150,7 @@ export default function Header() {
           </div>
 
           {/* Desktop nav */}
-          <ul className="flex-1 items-center justify-start gap-3 md:gap-8 flex text-xs md:text-sm font-semibold">
+          <ul className="flex-1 items-center justify-evenly gap-3 md:gap-8 flex text-xs md:text-sm font-semibold">
             {generalNavLinks.map((item, index) => {
                    return <Link
                           key={index}
