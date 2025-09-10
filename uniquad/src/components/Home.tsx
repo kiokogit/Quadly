@@ -30,7 +30,7 @@ export default function YouPage() {
             return <></>
     }
   return (
-    <div className="max-w-3xl mx-auto px-4 py-6 space-y-10 border-b border-t border-r border-l border-gray-200 dark:border-gray-800 p-4 transition-shadow">
+    <div className="max-w-lg mx-auto px-4 py-6 space-y-10 border-b border-t border-r border-l border-gray-200 dark:border-gray-800 p-4 transition-shadow">
       {/* Stats */}
       
       <section className="flex gap-6 justify-evenly text-center">
