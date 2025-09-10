@@ -53,7 +53,7 @@ export default function Header() {
     { icon: Home, label: 'You', href: '/home'},
     {icon: CalendarHeartIcon, label: 'Events', href:'/events'},
     {icon: FaSearchengin, label: 'Discover', href:'/discover'},
-    {icon: FaPeopleGroup, label: 'Feed', href:'/forum'},
+    {icon: FaPeopleGroup, label: 'Forum', href:'/forum'},
     {icon: FaStarHalfAlt, label: 'Reviews', href:'/reviews'},
   ]
 
@@ -183,7 +183,7 @@ export default function Header() {
                           className={`text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors relative pb-1 `}>
                                 <div className={`${pathname === item.href ? 'text-orange-600':''} flex flex-col items-center`}>
                                   {item.icon && <item.icon size={16} />}
-                                   <span className="text-xs mt-1">{item.label}</span>
+                                   <span className="text-xs">{item.label}</span>
                                 </div>
                         </Link>
               })}
