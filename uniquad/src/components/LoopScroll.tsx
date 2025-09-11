@@ -152,7 +152,9 @@ const EventsFeed: React.FC = () => {
           key={event.id} 
           event={event} 
           onLike={handleLike}
-          onAttend={handleAttend}
+          onShare={handleAttend}
+        onAttend={handleAttend}
+        onBookmark={handleAttend}
         />
       ))}
       

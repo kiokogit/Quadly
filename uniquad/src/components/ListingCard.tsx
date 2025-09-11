@@ -1,35 +1,38 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   User,
   MapPin,
   Star,
   MoreHorizontal,
   MessageCircle,
-  ThumbsUp,
-  ThumbsDown,
   Share2,
+  Heart,
   Bookmark,
+  Eye,
+  Clock,
+  ChevronRight
 } from "lucide-react";
 import Link from "next/link";
 
 export interface Product {
-  id: string
-  title: string
-  description: string
-  price: number
-  location: string
-  availableFrom: Date
-  imageUrl?: string
-  userId: string
-  userName: string
-  userAvatar?: string
-  createdAt: Date
-  verified: boolean
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  location: string;
+  availableFrom: Date;
+  imageUrl?: string;
+  userId: string;
+  userName: string;
+  userAvatar?: string;
+  createdAt: Date;
+  verified: boolean;
   comments: number;
   upvotes: number;
   downvotes: number;
   bookmarks: number;
+  views?: number;
 }
 
 const ProductCard: React.FC<{
@@ -37,10 +40,20 @@ const ProductCard: React.FC<{
   onUpvote: (id: string) => void;
   onDownvote: (id: string) => void;
   onBookmark: (id: string) => void;
-}> = ({ product, onUpvote, onDownvote, onBookmark }) => {
+  onShare: (id: string) => void;
+}> = ({ 
+  product, 
+  onUpvote, 
+  onDownvote, 
+  onBookmark, 
+  onShare
+}) => {
+  const [isLiked, setIsLiked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+
   const formatTime = (date: Date) => {
     const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-    const diffInSeconds = Math.floor((date.getTime() - Date.now()) / 1000);
+    const diffInSeconds = Math.floor((Date.now() - date.getTime()) / 1000);
 
     const divisions: { amount: number; name: Intl.RelativeTimeFormatUnit }[] = [
       { amount: 60, name: "second" },
@@ -52,119 +65,177 @@ const ProductCard: React.FC<{
       { amount: Number.POSITIVE_INFINITY, name: "year" },
     ];
 
-    let duration = diffInSeconds;
+    let duration = Math.abs(diffInSeconds);
     for (let i = 0; i < divisions.length; i++) {
       const division = divisions[i];
-      if (Math.abs(duration) < division.amount) {
-        return rtf.format(Math.round(duration), division.name);
+      if (duration < division.amount) {
+        return rtf.format(-Math.round(duration), division.name);
       }
       duration /= division.amount;
     }
   };
 
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('en-KE', {
+      style: 'currency',
+      currency: 'KES',
+      minimumFractionDigits: 0
+    }).format(price);
+  };
+
+  const handleLike = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsLiked(!isLiked);
+    onUpvote(product.id);
+  };
+
+  const handleBookmark = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setIsBookmarked(!isBookmarked);
+    onBookmark(product.id);
+  };
+
+  const handleShare = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onShare(product.id);
+  };
+
+  const handleContactSeller = (e: React.MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div className="border-b border-l border-r border-gray-200 dark:border-gray-800 p-4 cursor-pointer transition-shadow">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center bg-gray-500 dark:bg-gray-900">
-            {product.userAvatar ? (
-              <img
-                src={product.userAvatar}
-                alt={product.userName}
-                className="w-full h-full rounded-full object-cover"
-              />
-            ) : (
-              <User className="w-5 h-5 text-gray-200 dark:text-gray-400 " />
-            )}
-          </div>
-          <div className="flex flex-col">
-            <small className="font-semibold text-xs text-gray-900 dark:text-gray-100 flex items-center gap-1">
-              {product.userName}
-              {product.verified && (
-                <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
+    <div className="bg-white dark:bg-gray-900 rounded-lg mb-2 shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-lg transition-all duration-300">
+      <div className="flex items-center justify-between  p-4">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+              {product.userAvatar ? (
+                <img
+                  src={product.userAvatar}
+                  alt={product.userName}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <User className="w-5 h-5 text-white" />
               )}
-            </small>
-            <small className="text-xs mt-1 text-gray-500 dark:text-gray-400">
-              <i className="text-xs font-normal">{formatTime(product.createdAt)}</i>
-            </small>
+            </div>
+            <div className="flex flex-col">
+              <div className="flex items-center space-x-1">
+                <span className="font-semibold text-sm text-gray-900 dark:text-gray-100">
+                  {product.userName}
+                </span>
+                {product.verified && (
+                  <Star className="w-3 h-3 text-blue-500 fill-blue-500" />
+                )}
+              </div>
+              <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
+                <Clock className="w-3 h-3" />
+                <span>{formatTime(product.createdAt)}</span>
+              </div>
+            </div>
+          </div>
+          <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-colors">
+            <MoreHorizontal className="w-4 h-4 text-gray-500 dark:text-gray-400" />
+          </button>
+        </div>
+
+      {/* Image Section */}
+      {product.imageUrl && (
+        <div className="relative overflow-hidden">
+          <img
+            src={product.imageUrl}
+            alt={product.title}
+            className="w-full max-h-64 object-cover"
+          />
+          <div className="absolute top-3 right-3 bg-black/20 backdrop-blur-sm rounded-full p-2">
+            <button
+              onClick={handleBookmark}
+              className="text-white hover:scale-110 transition-transform"
+            >
+              <Bookmark 
+                className={`w-4 h-4 ${isBookmarked ? 'fill-white' : ''}`} 
+              />
+            </button>
+          </div>
+          {product.views && (
+            <div className="absolute bottom-3 right-3 bg-black/40 backdrop-blur-sm rounded-full px-2 py-1 flex items-center space-x-1">
+              <Eye className="w-3 h-3 text-white" />
+              <span className="text-xs text-white font-medium">{product.views}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Content Section */}
+      <div className="p-4">
+        {/* Header with User Info */}
+        
+        {/* Product Info */}
+        <div className="mb-4">
+          <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">
+            {product.title}
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 text-sm mb-3 line-clamp-2">
+            {product.description}
+          </p>
+
+          {/* Price and Location */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center space-x-1">
+              <span className="text-2xl font-bold text-green-600 dark:text-green-400">
+                {formatPrice(product.price)}
+              </span>
+            </div>
+            <div className="flex items-center space-x-1 text-sm text-gray-500 dark:text-gray-400">
+              <MapPin className="w-4 h-4" />
+              <span>{product.location}</span>
+            </div>
           </div>
         </div>
-        <button className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full">
-          <MoreHorizontal className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-        </button>
-      </div>
 
-      {/* Product Content */}
-      <Link href={`/products/${product.id}`} className="mb-3">
-        {product.imageUrl && (
-          <div className="rounded-lg overflow-hidden mb-3">
-            <img
-              src={product.imageUrl}
-              alt={product.title}
-              className="w-full max-h-64 object-cover"
-            />
-          </div>
-        )}
-        <h3 className="font-bold text-md text-gray-900 dark:text-gray-100 mb-2">
-          {product.title}
-        </h3>
-        <p className="text-gray-700 dark:text-gray-300 mb-3 text-sm">
-          {product.description}
-        </p>
-
-        {/* Product Details */}
-        <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400 mb-3">
+        {/* Action Buttons */}
+        <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800">
           <div className="flex items-center space-x-1">
-            <MapPin className="w-4 h-4" />
-            <span>{product.location}</span>
+            <button
+              onClick={handleLike}
+              className={`flex items-center space-x-1 px-3 py-2 rounded-full transition-all ${
+                isLiked 
+                  ? 'bg-red-50 text-red-500 dark:bg-red-900/20 dark:text-red-400' 
+                  : 'text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800'
+              }`}
+            >
+              <Heart className={`w-4 h-4 ${isLiked ? 'fill-current' : ''}`} />
+              <span className="text-sm font-medium">{product.upvotes + (isLiked ? 1 : 0)}</span>
+            </button>
+
+            <button className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors">
+              <MessageCircle className="w-4 h-4" />
+              <span className="text-sm font-medium">{product.comments}</span>
+            </button>
+
+            <button
+              onClick={handleShare}
+              className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
+            >
+              <Share2 className="w-4 h-4" />
+            </button>
           </div>
-          <div className="flex items-center space-x-1">
-            <span className="font-semibold text-green-600 dark:text-green-400">
-              KES {product.price}
-            </span>
+
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={handleContactSeller}
+              className="px-4 py-2 bg-orange-700 hover:bg-orange-800 text-white text-sm font-medium rounded-full transition-colors"
+            >
+              Contact
+            </button>
+            <Link
+              href={`/discover/${product.id}`}
+              className="flex items-center space-x-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-full transition-colors"
+            >
+              <span>View</span>
+              <ChevronRight className="w-3 h-3" />
+            </Link>
           </div>
-          <div className="flex items-center space-x-1">
-            <span>Available: {product.availableFrom.toLocaleDateString()}</span>
-          </div>
-        </div>
-      </Link>
-
-      {/* Interaction Buttons */}
-      <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-900">
-        <div className="flex items-center justify-between w-full gap-2">
-          <button
-            onClick={() => onUpvote(product.id)}
-            className="flex items-center space-x-1 px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
-          >
-            <ThumbsUp className="w-4 h-4" />
-            <span className="text-sm">{product.upvotes}</span>
-          </button>
-
-          <button
-            onClick={() => onDownvote(product.id)}
-            className="flex items-center space-x-1 px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
-          >
-            <ThumbsDown className="w-4 h-4" />
-            <span className="text-sm">{product.downvotes}</span>
-          </button>
-
-          <button className="flex items-center space-x-1 px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors">
-            <MessageCircle className="w-4 h-4" />
-            <span className="text-sm">{product.comments}</span>
-          </button>
-
-          <button
-            onClick={() => onBookmark(product.id)}
-            className="flex items-center space-x-1 px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors"
-          >
-            <Bookmark className="w-4 h-4" />
-            <span className="text-sm">{product.bookmarks}</span>
-          </button>
-
-          <button className="flex items-center space-x-1 px-3 py-1 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700 transition-colors">
-            <Share2 className="w-4 h-4" />
-          </button>
         </div>
       </div>
     </div>

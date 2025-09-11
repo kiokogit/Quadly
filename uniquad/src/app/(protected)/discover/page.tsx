@@ -90,10 +90,12 @@ const ProductsFeed: React.FC = () => {
   }, [loadMore, loading, hasMore])
 
   return (
-    <div>
+    <div >
+      
       {products.map((p) => (
-        <ProductCard key={p.id} product={p} onBookmark={() => handleCounts()} onUpvote={() => handleCounts()} onDownvote={() => handleCounts()} />
-      ))}
+              <ProductCard key={p.id} product={p} onBookmark={() => handleCounts()} onUpvote={() => handleCounts()} onDownvote={() => handleCounts()} onShare={() => handleCounts()}/>
+            ))}
+     
 
       <div ref={loadingRef} className="flex justify-center py-8">
         {loading && (

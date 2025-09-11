@@ -84,18 +84,19 @@ const PostCard: React.FC<{
 
       {/* Post Content */}
       <div className="mb-3">
-        <p className="text-gray-700 dark:text-gray-300 mb-2 text-sm whitespace-pre-wrap">
-          {post.content}
-        </p>
         {post.imageUrl && (
-          <div className="rounded-lg overflow-hidden">
+          <div className="rounded-lg overflow-hidden mb-2">
             <img
               src={post.imageUrl}
               alt="Post media"
-              className="w-full max-h-72 object-cover"
+              className="w-full max-h-64 object-cover"
             />
           </div>
         )}
+        <p className="text-gray-700 dark:text-gray-300  text-sm whitespace-pre-wrap">
+          {post.content}
+        </p>
+        
       </div>
 
       {/* Interaction Buttons */}
