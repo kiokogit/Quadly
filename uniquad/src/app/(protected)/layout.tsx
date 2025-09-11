@@ -5,7 +5,7 @@ import { useSession,} from "next-auth/react"
 import { redirect } from "next/navigation"
 import FloatingFab from "@/components/FloatingActionButton"
 import LeftSideBar from "@/components/LeftSideBar"
-import SwipeWrapper from "../swippable"
+// import SwipeWrapper from "../swippable"
 
 export default function RootLayout({
   children,
@@ -33,9 +33,9 @@ export default function RootLayout({
         <FloatingFab />
         
  <main className="md:col-span-6 max-w-2xl w-full mx-auto py-16">
-  <SwipeWrapper >
+  {/* <SwipeWrapper > */}
 {children}
-  </SwipeWrapper>
+  {/* </SwipeWrapper> */}
           
         </main>
         
