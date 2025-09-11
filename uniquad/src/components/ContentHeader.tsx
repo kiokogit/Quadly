@@ -8,7 +8,7 @@ export default function ContentHeader({welcomeMsg, newItemName}: {welcomeMsg: st
   const [showNewEvent, setShowNewEvent] = useState(false)
 
   return (
-    <div className="border-b border-t border-r border-l border-gray-200 dark:border-gray-800 p-4 transition-shadow">
+    <div className="md:border-b md:border-t md:border-r md:border-l border-gray-200 dark:border-gray-800 p-4 transition-shadow">
       <div className="text-gray-600 dark:text-gray-400 mb-4 text-xs flex flex-row justify-between items-center">
         <div>{welcomeMsg}</div>
         <div className="flex gap-2">

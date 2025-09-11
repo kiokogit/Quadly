@@ -14,7 +14,8 @@ import {
   Bookmark,
   ChevronRight,
   CalendarPlus,
-  ExternalLink
+  ExternalLink,
+  EyeIcon
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -171,12 +172,12 @@ const EventCard: React.FC<{
   const scopeConfig = getScopeConfig(event.scope);
 
   return (
-    <div className="bg-white dark:bg-gray-900 mb-2 shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+    <div className=" pb-2 shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
       
         {/* Header with User Info */}
-        <div className="flex items-center justify-between p-2 mb-2">
+        <div className="flex items-center justify-between p-2 mb-2 mt-2">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-400 flex items-center justify-center">
               {event.userAvatar ? (
                 <img 
                   src={event.userAvatar} 
@@ -184,7 +185,7 @@ const EventCard: React.FC<{
                   className="w-full h-full object-cover" 
                 />
               ) : (
-                <User className="w-6 h-6 text-white" />
+                <User className="w-6 h-6 text-gray-300" />
               )}
             </div>
             <div className="flex flex-col">
@@ -248,7 +249,7 @@ const EventCard: React.FC<{
       <div className="p-5">
 
         {/* Event Info */}
-        <div className="mb-4">
+        <Link href={`/events/${event.id}`} className="mb-2">
           <div className="flex items-start justify-between mb-3">
             <h3 className="font-bold text-xl text-gray-900 dark:text-gray-100 line-clamp-2 flex-1">
               {event.title}
@@ -292,22 +293,11 @@ const EventCard: React.FC<{
                 )}
               </div>
             </div>
-
-            {event.maxAttendees && (
-              <div className="flex items-center space-x-3 text-sm">
-                <div className="flex items-center justify-center w-8 h-8 bg-purple-100 dark:bg-purple-900/30 rounded-full">
-                  <Users className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-                </div>
-                <span className="text-gray-600 dark:text-gray-400">
-                  {event.attending} / {event.maxAttendees} spots filled
-                </span>
-              </div>
-            )}
           </div>
-        </div>
+        </Link>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
+        <div className="flex items-center justify-between pt-1 border-t border-gray-100 dark:border-gray-800">
           <div className="flex items-center space-x-1">
             
             <button className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors">
@@ -326,39 +316,22 @@ const EventCard: React.FC<{
           <div className="flex items-center space-x-2">
             <button
               onClick={handleAttend}
-              className={`flex items-center space-x-2 px-4 py-2 rounded-full font-medium transition-all ${
-                isAttending 
-                  ? 'bg-green-600 hover:bg-green-700 text-white' 
-                  : 'bg-orange-800 hover:bg-orange-900 text-white'
-              }`}
+              className={`flex items-center space-x-2 font-medium `}
             >
-              {isAttending ? (
-                <>
-                  <CalendarPlus className="w-4 h-4" />
-                  <span className="text-sm">Going</span>
-                </>
-              ) : (
-                <>
+              <>
                   <Users className="w-4 h-4" />
-                  <span className="text-sm">Interested</span>
+                  <span className="text-sm">{event.attending} Interested</span>
                 </>
-              )}
+              
             </button>
             
-            <Link
+            {/* <Link
               href={`/events/${event.id}`}
               className="flex items-center space-x-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full transition-colors"
             >
-              <span className="text-sm font-medium">Details</span>
-              <ChevronRight className="w-3 h-3" />
-            </Link>
+              <EyeIcon className="w-3 h-3" />
+            </Link> */}
           </div>
-        </div>
-
-        {/* Additional Info Bar */}
-        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100 dark:border-gray-800 text-xs text-gray-500 dark:text-gray-400">
-          <span>{event.attending} people interested</span>
-          <span>#{event.id.slice(-6)}</span>
         </div>
       </div>
     </div>

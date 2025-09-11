@@ -11,9 +11,11 @@ import {
   Bookmark,
   Eye,
   Clock,
-  ChevronRight
+  ChevronRight,
+  VerifiedIcon
 } from "lucide-react";
 import Link from "next/link";
+import { BiCertification, BiCheckCircle } from "react-icons/bi";
 
 export interface Product {
   id: string;
@@ -105,10 +107,10 @@ const ProductCard: React.FC<{
   };
 
   return (
-    <div className="bg-white dark:bg-gray-900 rounded-lg mb-2 shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-lg transition-all duration-300">
-      <div className="flex items-center justify-between  p-4">
+    <div className=" mb-2 shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden hover:shadow-lg transition-all duration-300">
+      <div className="flex items-center justify-between p-2">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
+            {/* <div className="w-10 h-10 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
               {product.userAvatar ? (
                 <img
                   src={product.userAvatar}
@@ -118,19 +120,20 @@ const ProductCard: React.FC<{
               ) : (
                 <User className="w-5 h-5 text-white" />
               )}
-            </div>
+            </div> */}
             <div className="flex flex-col">
               <div className="flex items-center space-x-1">
-                <span className="font-semibold text-sm text-gray-900 dark:text-gray-100">
+                {/* <span className="font-semibold text-sm text-gray-900 dark:text-gray-100">
                   {product.userName}
-                </span>
-                {product.verified && (
-                  <Star className="w-3 h-3 text-blue-500 fill-blue-500" />
-                )}
+                </span> */}
+                
               </div>
               <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
                 <Clock className="w-3 h-3" />
                 <span>{formatTime(product.createdAt)}</span>
+                {product.verified && (
+                  <BiCheckCircle className="w-4 h-4 text-blue-500 fill-blue-500" />
+                )}
               </div>
             </div>
           </div>
@@ -171,7 +174,7 @@ const ProductCard: React.FC<{
         {/* Header with User Info */}
         
         {/* Product Info */}
-        <div className="mb-4">
+        <Link href={`/discover/${product.id}`} className="mb-4">
           <h3 className="font-bold text-lg text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">
             {product.title}
           </h3>
@@ -191,7 +194,7 @@ const ProductCard: React.FC<{
               <span>{product.location}</span>
             </div>
           </div>
-        </div>
+        </Link>
 
         {/* Action Buttons */}
         <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-800">
@@ -222,17 +225,12 @@ const ProductCard: React.FC<{
           </div>
 
           <div className="flex items-center space-x-2">
-            <button
-              onClick={handleContactSeller}
-              className="px-4 py-2 bg-orange-700 hover:bg-orange-800 text-white text-sm font-medium rounded-full transition-colors"
-            >
-              Contact
-            </button>
+            
             <Link
               href={`/discover/${product.id}`}
               className="flex items-center space-x-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-full transition-colors"
             >
-              <span>View</span>
+              <span>Locate</span>
               <ChevronRight className="w-3 h-3" />
             </Link>
           </div>
