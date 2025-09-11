@@ -4,6 +4,8 @@ import { useSwipeable } from "react-swipeable";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 
+import { motion, AnimatePresence } from "framer-motion";
+
 const pages = ["/home", "/events", "/discover", "/forum", "reviews"]; // order matches navbar
 
 export default function SwipeWrapper({ children }: { children: React.ReactNode }) {
@@ -28,7 +30,18 @@ export default function SwipeWrapper({ children }: { children: React.ReactNode }
 
   return (
     <div {...handlers} className="h-full w-full">
-      {children}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={pathname} // triggers animation on route change
+          initial={{ x: 100, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          exit={{ x: -100, opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          className="h-full w-full"
+        >
+          {children}
+        </motion.div>
+      </AnimatePresence>
     </div>
   );
 }
