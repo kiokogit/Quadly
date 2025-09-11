@@ -5,6 +5,7 @@ import { useSession,} from "next-auth/react"
 import { redirect } from "next/navigation"
 import FloatingFab from "@/components/FloatingActionButton"
 import LeftSideBar from "@/components/LeftSideBar"
+import SwipeWrapper from "../swippable"
 
 export default function RootLayout({
   children,
@@ -30,9 +31,15 @@ export default function RootLayout({
 
         {/* Main Content */}
         <FloatingFab />
-        <main className="md:col-span-6 max-w-2xl w-full mx-auto py-16">
-          {children}
+        
+ <main className="md:col-span-6 max-w-2xl w-full mx-auto py-16">
+  <SwipeWrapper >
+{children}
+  </SwipeWrapper>
+          
         </main>
+        
+       
 
         {/* Right Sidebar */}
         <aside className="hidden md:col-span-3 md:flex flex-col mt-[-12px] sticky top-0 h-[calc(100vh-3.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"
