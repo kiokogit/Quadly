@@ -16,6 +16,8 @@ import {
   Home,
   MessageSquare,
   CalendarHeartIcon,
+  ChevronRight,
+  Settings2Icon,
 } from 'lucide-react'
 import { FaSearchengin, FaStarHalfAlt } from "react-icons/fa";
 import { FaPeopleGroup } from "react-icons/fa6";
@@ -38,7 +40,9 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const dropdownItems = [
+  const dropdownItems = pathname !== '/setup' ? [
+    { icon: LogOut, label: 'Sign out', action: () => signOut(), className: 'hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400' }
+] : [
     { icon: Home, label: 'Home', href: '/home', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
     { icon: User, label: 'Profile', href: '/profile', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
     { icon: Settings, label: 'Settings', href: '/settings', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
@@ -49,13 +53,13 @@ export default function Header() {
     { icon: LogOut, label: 'Sign out', action: () => signOut(), className: 'hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400' }
   ]
 
-  const generalNavLinks = [
+  const generalNavLinks = pathname !== '/setup' ? [
     { icon: Home, label: 'Home', href: '/home'},
     {icon: CalendarHeartIcon, label: 'Events', href:'/events'},
     {icon: FaSearchengin, label: 'Discover', href:'/discover'},
     {icon: FaPeopleGroup, label: 'Forum', href:'/forum'},
-    {icon: FaStarHalfAlt, label: 'Reviews', href:'/reviews'},
-  ]
+    {icon: FaStarHalfAlt, label: 'Purchase', href:'/reviews'},
+  ] : [{ icon: Settings2Icon, label: 'Setup Profile', href: '/setup'}]
 
   return (
     <header className="fixed z-30 w-full ">

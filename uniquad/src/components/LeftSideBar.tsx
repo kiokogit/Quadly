@@ -3,11 +3,11 @@
 import Footer from "@/components/footer"
 import { signOut, useSession } from "next-auth/react"
 import { Home, User, Settings, Bell, HelpCircle, LogOut, MessageSquare } from "lucide-react"
-import Logo from "@/components/logo"
+import { usePathname } from "next/navigation";
 
 
 export default function LeftSideBar() {
-
+    const pathname = usePathname();
     const { data: session } = useSession()
       
         if (!session) {
@@ -18,7 +18,7 @@ export default function LeftSideBar() {
         | { icon: React.ElementType; label: string; href: string; action?: () => void; className?: string; type?: undefined }
         | { type: "divider"; icon?: undefined; label?: undefined; href?: undefined; action?: undefined; className?: undefined };
     
-      const leftSideBarItems: LeftSideBarItem[] = [
+      const leftSideBarItems: LeftSideBarItem[] = pathname !== '/setup' ?  [
         { icon: Home, label: "Home", href: "/home" },
         { icon: User, label: "Profile", href: "/profile" },
         { icon: Settings, label: "Settings", href: "/settings" },
@@ -26,8 +26,8 @@ export default function LeftSideBar() {
         { icon: MessageSquare, label: "Messages", href: "/direct-messages" },
         { icon: HelpCircle, label: "Help & Support", href: "/help" },
         // { type: "divider" },
-        { icon: LogOut, label: "Sign out", href: "#", action: () => signOut(), className: "text-red-600 dark:text-red-400" },
-      ]
+        { icon: LogOut, label: "Sign out", href: "/", action: () => signOut(), className: "text-red-600 dark:text-red-400" },
+      ] : [{ icon: LogOut, label: "Sign out", href: "#", action: () => signOut(), className: "text-red-600 dark:text-red-400" }]
     
 
     return (

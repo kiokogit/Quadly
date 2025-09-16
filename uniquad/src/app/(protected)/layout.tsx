@@ -1,23 +1,19 @@
 "use client"
 
 import Navbar from "@/components/Navbar"
-import { useSession,} from "next-auth/react"
-import { redirect } from "next/navigation"
 import FloatingFab from "@/components/FloatingActionButton"
 import LeftSideBar from "@/components/LeftSideBar"
-// import SwipeWrapper from "../swippable"
+import { useEffect } from "react"
+import axiosInstance from "@/lib/api-client"
+
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { data: session } = useSession()
 
-  if (!session) {
-    redirect("/")
-  }
-
+  
   return (
     <div className="min-h-screen flex flex-col ">
       {/* Top navbar */}
@@ -39,8 +35,6 @@ export default function RootLayout({
           
         </main>
         
-       
-
         {/* Right Sidebar */}
         <aside className="hidden md:col-span-3 md:flex flex-col mt-[-12px] sticky top-0 h-[calc(100vh-3.5rem)] overflow-y-auto overflow-x-hidden scrollbar-hide"
             >

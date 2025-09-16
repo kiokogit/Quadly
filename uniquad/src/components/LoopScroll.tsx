@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import EventCard from '@/components/EventCard';
-import ContentHeader from '@/components/ContentHeader';
 
 // Mock event data structure
 interface Event {

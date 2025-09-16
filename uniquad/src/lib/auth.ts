@@ -3,6 +3,7 @@ import { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import GithubProvider from "next-auth/providers/github"
 import FacebookProvider from "next-auth/providers/facebook"
+import axios from "axios"
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -24,9 +25,61 @@ export const authOptions: NextAuthOptions = {
     signIn: "/",
   },
   callbacks: {
+    async signIn({ user, account, profile }) {
+      try {
+        if (account && profile) {
+          const res = await axios.post(`http://localhost:8000/auth-api/auth/oauth/callback/`, {
+            email: profile.email,
+            first_name: (profile as any).given_name || profile.name?.split(" ")[0] || "",
+            last_name: (profile as any).family_name || profile.name?.split(" ")[1] || "",
+            provider: account.provider,
+            avatar: (profile as any).picture || "",
+            user: user,
+            account: account
+          })
+
+          if (res.status === 200) {
+            // ✅ Store backend tokens inside token (via jwt callback)
+            ;(user as any).backendToken = res.data.access
+            ;(user as any).backendUser = res.data.user
+            return true
+          } else {
+            console.error("Backend authentication failed:", res.data)
+            return false
+          }
+        }
+        return false
+      } catch (err: any) {
+        console.error("Failed to sync with backend:", err?.response?.data || err)
+        return false
+      }
+    },
+
+    async jwt({ token, user }) {
+      // Persist backend tokens in the JWT
+      if (user) {
+        token.backendToken = (user as any).backendToken
+        token.backendUser = (user as any).backendUser
+      }
+      return token
+    },
+
+    async session({ session, token }) {
+      // Expose backend tokens in session
+      if (token.backendToken) {
+        ;(session as any).backendToken = token.backendToken
+      }
+      if (token.backendUser) {
+        ;(session as any).backendUser = token.backendUser
+      }
+      return session
+    },
+
     async redirect({ url, baseUrl }) {
-      
       if (url.startsWith("/")) return `${baseUrl}${url}`
+      if (url.includes("error=")) {
+        return `${baseUrl}/auth/error?${url.split("?")[1]}`
+      }
       return baseUrl
     },
   },
