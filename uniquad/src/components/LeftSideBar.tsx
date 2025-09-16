@@ -26,7 +26,7 @@ export default function LeftSideBar() {
         { icon: MessageSquare, label: "Messages", href: "/direct-messages" },
         { icon: HelpCircle, label: "Help & Support", href: "/help" },
         // { type: "divider" },
-        { icon: LogOut, label: "Sign out", href: "/", action: () => signOut(), className: "text-red-600 dark:text-red-400" },
+        { icon: LogOut, label: "Sign out", href: "#", action: () => signOut(), className: "text-red-600 dark:text-red-400" },
       ] : [{ icon: LogOut, label: "Sign out", href: "#", action: () => signOut(), className: "text-red-600 dark:text-red-400" }]
     
 

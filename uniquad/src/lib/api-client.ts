@@ -24,9 +24,9 @@ axiosInstance.interceptors.request.use(async (config: any) => {
 axiosInstance.interceptors.response.use(
   (res) => res,
   async (error) => {
-    if (error.response?.status === 401) {
-      await signOut({ redirect: true, callbackUrl: "/" });
-    }
+    // if (error.response?.status === 401) {
+    //   await signOut({ redirect: true, callbackUrl: "#" });
+    // }
     return Promise.reject(error);
   }
 );

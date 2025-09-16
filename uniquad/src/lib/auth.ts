@@ -39,7 +39,10 @@ export const authOptions: NextAuthOptions = {
           })
 
           if (res.status === 200) {
-            // ✅ Store backend tokens inside token (via jwt callback)
+            console.log('===================-----------------------------===========================')
+            console.log(res.data)
+            console.log('===================-----------------------------===========================')
+
             ;(user as any).backendToken = res.data.access
             ;(user as any).backendUser = res.data.user
             return true
@@ -48,7 +51,7 @@ export const authOptions: NextAuthOptions = {
             return false
           }
         }
-        return false
+        return true
       } catch (err: any) {
         console.error("Failed to sync with backend:", err?.response?.data || err)
         return false

@@ -3,9 +3,6 @@
 import Navbar from "@/components/Navbar"
 import FloatingFab from "@/components/FloatingActionButton"
 import LeftSideBar from "@/components/LeftSideBar"
-import { useEffect } from "react"
-import axiosInstance from "@/lib/api-client"
-
 
 export default function RootLayout({
   children,

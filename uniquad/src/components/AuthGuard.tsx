@@ -1,33 +1,43 @@
+'use client';
 
-// src/components/AuthGuard.tsx
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import axiosInstance from '@/lib/api-client';
+import { User, UserProvider, useUser } from '@/app/userProvider';
 
-interface AuthGuardProps {
-  children: React.ReactNode;
-  fallback?: React.ReactNode;
-}
 
-export function AuthGuard({ children, fallback }: AuthGuardProps) {
-  const { data: session, status } = useSession();
-  const router = useRouter();
+export default function AuthGate({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const [loggedInUser, setLoggedInUser] = useState<any>({});
+
+  const fetchUser = async () => {
+    try {
+      const res = await axiosInstance.get(`/users/profile/me`);
+      setLoggedInUser(res.data);
+    } catch {
+      console.warn('User fetch failed');
+    }
+  };
 
   useEffect(() => {
-    if (status === 'loading') return; // Still loading
+  fetchUser();
+  }, [pathname]);
 
-    if (!session) {
-      router.push('/api/auth/signin');
-    }
-  }, [session, status, router]);
 
-  if (status === 'loading') {
-    return fallback || <div>Loading...</div>;
-  }
-
-  if (!session) {
-    return fallback || null;
-  }
-
-  return <>{children}</>;
+  return <UserProvider>
+    <Initializer user={loggedInUser} />
+    {children}
+    </UserProvider>;
 }
+
+const Initializer = ({ user }: { user: User }) => {
+  const { setUser } = useUser();
+
+
+  useEffect(() => {
+    setUser(user);
+  }, [user, setUser]);
+
+  return null;
+};
+
