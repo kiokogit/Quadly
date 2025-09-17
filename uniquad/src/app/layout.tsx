@@ -2,7 +2,6 @@
 import { SessionProvider } from "next-auth/react"
 import "./globals.css"
 import { SplashProvider } from "./splash_provider"
-import { Providers } from "./providers"
 
 export default function RootLayout({
   children,
@@ -19,11 +18,9 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen text-gray-900 dark:text-gray-100 bg-white dark:bg-orange-900 transition-colors duration-300">
         <SessionProvider>
-          <Providers>
             <SplashProvider>
               <main className="">{children}</main>
             </SplashProvider>
-          </Providers>
         </SessionProvider>
       </body>
     </html>

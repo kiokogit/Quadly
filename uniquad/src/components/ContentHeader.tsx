@@ -3,15 +3,20 @@ import { useState } from "react"
 import SearchInput from "./SearchInput"
 import NewEventBox from "./NewPostBox"
 import { redirect } from "next/navigation"
-import { useUser } from "@/app/userProvider"
+import { useSession } from "next-auth/react"
 
 export default function ContentHeader({welcomeMsg, newItemName}: {welcomeMsg: string, newItemName: string}) {
   const [showSearch, setShowSearch] = useState(false)
   const [showNewEvent, setShowNewEvent] = useState(false)
 
-  const {user} = useUser()
-  if (!user) {
+  const {data: session} = useSession()
+
+  if (!session) {
     redirect('/')
+  }
+
+  if (!(session as any)?.user?.campus){
+    redirect('/setup')
   }
 
   return (

@@ -1,6 +1,9 @@
 "use client"
-import React, { useState } from 'react';
-import { ChevronRight, ChevronLeft, Users, Shield, Star, MapPin, GraduationCap, Calendar, BookOpen, Info, Megaphone, Heart, Search, ShoppingBag, PenTool, MoreHorizontal } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { ChevronRight, ChevronLeft, Users, Shield, Star, MapPin, Calendar, BookOpen, Info, Megaphone, Heart, Search, ShoppingBag, PenTool, MoreHorizontal } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { redirect } from 'next/navigation';
+import axiosInstance from '@/lib/api-client';
 
 const OnboardingFlow: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
@@ -10,11 +13,19 @@ const OnboardingFlow: React.FC = () => {
     campus: '',
     course: '',
     yearOfStudy: '',
-    interests: []
+    interests: [],
+    fullname: ''
   });
 
   const totalSteps = 4;
 
+   const {data: session} = useSession()
+  
+    if ((session as any)?.user?.campus) {
+      redirect('/home')
+    }
+  
+   
   const accountTypes = [
     {
       id: 'student',
@@ -23,33 +34,33 @@ const OnboardingFlow: React.FC = () => {
       icon: <Users className="w-6 h-6" />
     },
     {
+      id: 'premium',
+      title: 'Premium',
+      description: 'Enhanced features & benefits',
+      icon: <Star className="w-6 h-6" />
+    },
+    {
       id: 'admin',
       title: 'Campus Admin',
       description: 'Manage campus community',
       icon: <Shield className="w-6 h-6" />
     },
-    {
-      id: 'premium',
-      title: 'Premium',
-      description: 'Enhanced features & benefits',
-      icon: <Star className="w-6 h-6" />
-    }
+    
   ];
 
-  const campuses = [
-    {
-      id: 'jkuat',
-      name: 'JKUAT',
-      fullName: 'Jomo Kenyatta University of Agriculture and Technology',
-      students: '40K+ students'
-    },
-    {
-      id: 'zetech',
-      name: 'Zetech University',
-      fullName: 'Zetech University',
-      students: '15K+ students'
-    }
-  ];
+  const [campuses, setCampuses] = useState<any[]>([])
+
+  const getCampuses = async() => {
+     await axiosInstance.get('/users/campuses/all').then(res => {
+      setCampuses(res.data)
+    })
+     
+  }
+
+  useEffect(() => {
+    getCampuses()
+
+  }, [])
 
   const interests = [
     { id: 'information', label: 'Information', icon: <Info className="w-4 h-4" /> },
@@ -58,7 +69,7 @@ const OnboardingFlow: React.FC = () => {
     { id: 'services', label: 'Locate Services', icon: <Search className="w-4 h-4" /> },
     { id: 'offers', label: 'Find Offers', icon: <ShoppingBag className="w-4 h-4" /> },
     { id: 'sell', label: 'Sell Items', icon: <ShoppingBag className="w-4 h-4" /> },
-    { id: 'blog', label: 'Blog', icon: <PenTool className="w-4 h-4" /> },
+    { id: 'blog', label: 'Blogging', icon: <PenTool className="w-4 h-4" /> },
     { id: 'more', label: 'More', icon: <MoreHorizontal className="w-4 h-4" /> }
   ];
 
@@ -89,9 +100,14 @@ const OnboardingFlow: React.FC = () => {
     setFormData({ ...formData, interests: updatedInterests });
   };
 
-  const themeClasses = isDarkMode
-    ? 'bg-gray-900 text-white'
-    : 'bg-white text-gray-900';
+  const handleSubmit = async() => {
+    await axiosInstance.put('/users/profile/update-details', formData)
+    .then(res => {
+      alert('Profile Updated successfuly')
+      redirect('/home')
+    })
+    .catch(err => alert('THere was an error updating data'))
+  }
 
   const cardClasses = isDarkMode
     ? 'bg-gray-800 border-gray-700'
@@ -193,12 +209,12 @@ const OnboardingFlow: React.FC = () => {
                         <MapPin className="w-5 h-5" />
                       </div>
                       <div className="text-left">
-                        <h3 className="font-semibold text-lg">{campus.name}</h3>
+                        <h3 className="font-semibold text-lg">{campus.initials}</h3>
                         <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                          {campus.fullName}
+                          {campus.name}
                         </p>
                         <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                          {campus.students}
+                          {campus.students || 0} students
                         </p>
                       </div>
                     </div>
@@ -213,7 +229,7 @@ const OnboardingFlow: React.FC = () => {
         {currentStep === 3 && (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold mb-2">Academic Details</h1>
+              <h1 className="text-2xl font-bold mb-2">Personal Details</h1>
               <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 Help us personalize your experience (optional)
               </p>
@@ -222,12 +238,29 @@ const OnboardingFlow: React.FC = () => {
             <div className="space-y-4">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Course/Program
+                  Full Name 
                 </label>
                 <div className="relative">
                   <BookOpen className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
                   <input
                     type="text"
+                    placeholder="e.g., John Doe"
+                    className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
+                      isDarkMode ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
+                    } focus:ring-2 focus:ring-orange-500 focus:border-transparent`}
+                    value={formData.fullname}
+                    onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  About you
+                </label>
+                <div className="relative">
+                  <BookOpen className={`absolute left-3 top-1/6 transform  w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
+                  <textarea
+                    rows={3}
                     placeholder="e.g., Computer Science"
                     className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
                       isDarkMode ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
@@ -262,7 +295,7 @@ const OnboardingFlow: React.FC = () => {
                   </select>
                 </div>
               </div>
-
+{/* 
               {formData.accountType === 'admin' && (
                 <div>
                   <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
@@ -279,7 +312,7 @@ const OnboardingFlow: React.FC = () => {
                     />
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         )}
@@ -288,13 +321,13 @@ const OnboardingFlow: React.FC = () => {
         {currentStep === 4 && (
           <div className="space-y-6">
             <div className="text-center mb-8">
-              <h1 className="text-2xl font-bold mb-2">Choose Your Interests</h1>
+              <h1 className="text-2xl font-bold mb-2">What brings you here</h1>
               <p className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 What brings you to Uniquad? Select all that apply
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-wrap gap-3">
               {interests.map((interest) => (
                 <button
                   key={interest.id}
@@ -341,7 +374,7 @@ const OnboardingFlow: React.FC = () => {
           </button>
 
           <button
-            onClick={handleNext}
+            onClick={currentStep === totalSteps ? handleSubmit:handleNext}
             disabled={
               (currentStep === 1 && !formData.accountType) ||
               (currentStep === 2 && !formData.campus)

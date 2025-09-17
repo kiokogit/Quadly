@@ -23,7 +23,7 @@ export default function RootLayout({
        <LeftSideBar />
 
         {/* Main Content */}
-        <FloatingFab />
+        {/* <FloatingFab /> */}
         
  <main className="md:col-span-6 max-w-2xl w-full mx-auto py-16">
   {/* <SwipeWrapper > */}

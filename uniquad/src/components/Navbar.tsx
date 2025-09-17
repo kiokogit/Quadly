@@ -40,7 +40,7 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
 
-  const dropdownItems = pathname !== '/setup' ? [
+  const dropdownItems = pathname === '/setup' ? [
     { icon: LogOut, label: 'Sign out', action: () => signOut(), className: 'hover:bg-red-50 dark:hover:bg-red-900/30 text-red-600 dark:text-red-400' }
 ] : [
     { icon: Home, label: 'Home', href: '/home', className: 'hover:bg-gray-50 dark:hover:bg-gray-700' },
@@ -69,23 +69,25 @@ export default function Header() {
           <div className="relative flex h-8 items-center justify-between">
             
           <div className="relative text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400" ref={dropdownRef}>
-            <Link href={'/home'} className="hidden md:flex items-center gap-2 cursor-pointer hover:bg-transparent rounded-lg transition-colors scale-100 ">
+            <Link href={'/home'} className="hidden md:flex items-center ml-[-10px] gap-2 cursor-pointer hover:bg-transparent rounded-lg transition-colors scale-100 ">
               <Logo />
-              <div className="font-semibold">UniQuad</div>
+              <div className="font-semibold">UniQuad {session?.user?.campus && `- ${session?.user?.campus}`}</div>
             </Link>
             
             <button
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="flex md:hidden items-center gap-2 cursor-pointer md:cursor-normal hover:bg-transparent rounded-lg transition-colors scale-100 "
+              className="flex md:hidden items-center  cursor-pointer md:cursor-normal hover:bg-transparent rounded-lg transition-colors scale-100 "
             >
+              
               <Logo />
-                <div className="font-semibold">UniQuad</div>
-                <ChevronDown 
+              <ChevronDown 
                   size={16} 
-                  className={`text-gray-500 dark:text-gray-400 transition-transform duration-200 ${
+                  className={`text-gray-500 dark:text-gray-400  mr-2 transition-transform duration-200 ${
                     isDropdownOpen ? 'rotate-180' : ''
                   }`} 
                 />
+               <div className="font-semibold">UniQuad {session?.user?.campus && `- ${session?.user?.campus}`}</div>
+                
             </button>
 
             {isDropdownOpen && session && (
@@ -94,20 +96,20 @@ export default function Header() {
 
                 <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
                   <div className="flex items-center gap-3">
-                    {session.user?.image ? (
+                    {session.user?.avatar ? (
                       <img
-                        src={session.user.image}
+                        src={session.user.avatar}
                         alt="avatar"
                         className="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-gray-700"
                       />
                     ) : (
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
-                        {session.user?.name?.[0]}
+                        {session.user?.first_name[0]}
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
-                        {session.user?.name || "User"}
+                        {session.user?.first_name || "User"} {session.user?.last_name}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                         {session.user?.email || "user@example.com"}

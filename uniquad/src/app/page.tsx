@@ -4,23 +4,14 @@ import AuthButtons from "@/components/AuthButtons"
 import Logo from "@/components/logo"
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
-import { useState } from "react"
 
 const LandingPage: React.FC = () => {
   const { data: session } = useSession()
-  const [schoolEmail, setSchoolEmail] = useState("")
-
+ 
   if (session) {
     redirect("/home")
   }
 
-  const signInWithEmail = () => {
-    if (schoolEmail) {
-      console.log(`Signing in with email: ${schoolEmail}`)
-    } else {
-      alert("Please enter your school email address")
-    }
-  }
 
   return (
     <div className=" flex flex-col">
@@ -46,26 +37,6 @@ const LandingPage: React.FC = () => {
       {/* Auth Section */}
       <section className="flex flex-col items-center px-4 ">
         <div className="w-full max-w-xs">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            value={schoolEmail}
-            onChange={(e) => setSchoolEmail(e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded mb-2 focus:outline-none focus:ring-1 focus:ring-orange-500"
-          />
-          <button
-            onClick={signInWithEmail}
-            className="w-full px-3 py-2 text-sm bg-orange-600 text-white rounded hover:bg-orange-700 transition"
-          >
-            Continue with Email
-          </button>
-
-          <div className="flex items-center my-4 text-gray-400 text-xs">
-            <div className="flex-1 h-px bg-gray-200"></div>
-            <span className="px-2">OR</span>
-            <div className="flex-1 h-px bg-gray-200"></div>
-          </div>
-
           <AuthButtons />
         </div>
 

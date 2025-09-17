@@ -36,20 +36,20 @@ export default function LeftSideBar() {
           >
           <div className="px-4 border-gray-100 dark:border-gray-700">
                 <div className="flex items-center gap-3">
-                  {session.user?.image ? (
+                  {session.user?.avatar ? (
                     <img
-                      src={session.user.image}
+                      src={session.user.avatar}
                       alt="avatar"
                       className="w-10 h-10 rounded-full border-2 border-gray-200 dark:border-gray-700"
                     />
                   ) : (
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
-                      {session.user?.name?.[0]}
+                      {session.user?.first_name}
                     </div>
                   )}
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
-                      {session.user?.name || "User"}
+                      {session.user?.first_name || "User"} {session.user?.last_name || ""}
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                       {session.user?.email || "user@example.com"}
