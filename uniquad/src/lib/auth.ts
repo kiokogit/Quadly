@@ -1,5 +1,5 @@
 // src/lib/auth.ts
-import { NextAuthOptions } from "next-auth"
+import { DefaultSession, NextAuthOptions, Session as NextAuthSession } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import GithubProvider from "next-auth/providers/github"
 import FacebookProvider from "next-auth/providers/facebook"
@@ -7,20 +7,77 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import axios from "axios"
 import { fetchLoggedProfile } from "./api-calls"
 
+// src/types/auth.ts (or next-auth.d.ts)
+
+interface BackendUser {
+  id: number | string
+  email: string
+  first_name?: string
+  last_name?: string
+  avatar?: string
+  [key: string]: any
+}
+
+interface User {
+  id: string
+  name: string
+  email?: string
+  avatar?: string
+  first_name?: string
+  last_name?: string
+  access_token: string
+  refresh_token: string
+  backendUser: BackendUser
+}
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string
+      avatar: string
+      campus?: string
+      first_name: string
+      last_name: string
+    } & DefaultSession["user"]
+    access_token: string
+    refresh_token: string
+    expires: string
+  }
+}
+
+interface Profile {
+  email: string
+  name?: string
+  given_name?: string
+  family_name?: string
+  image?: string
+  [key: string]: any 
+}
+
+interface Payload {
+  email?: string,
+  password?: string,
+  provider: string,
+  [key: string]: any 
+}
+
+
 // 👇 single backend sync function for all providers
-async function syncWithBackend(payload: any) {
+async function syncWithBackend(payload: Payload) {
   try {
     const res = await axios.post("http://localhost:8000/auth-api/login/", payload)
 
     if (res.status === 200) {
       return {
+        id: res.data.user.id,
         access_token: res.data.access_token,
         refresh_token: res.data.refresh_token,
         backendUser: res.data.user,
+        name: res.data.user.first_name
       }
     }
     return null
-  } catch (err: any) {
+  } catch (err) {
     console.error("Backend auth failed:", err?.response?.data || err)
     return null
   }
@@ -84,38 +141,38 @@ export const authOptions: NextAuthOptions = {
       if (account && profile) {
         const result = await syncWithBackend({
           email: profile.email,
-          first_name: (profile as any).given_name || profile.name?.split(" ")[0] || "",
-          last_name: (profile as any).family_name || profile.name?.split(" ")[1] || "",
+          first_name: (profile as Profile).given_name || profile.name?.split(" ")[0] || "",
+          last_name: (profile as Profile).family_name || profile.name?.split(" ")[1] || "",
           provider: account.provider,
-          avatar: (profile as any).image || "",
+          avatar: (profile as Profile).image || "",
           user: user,
           account: account
         })
         if (!result) return false
-        ;(user as any) = result
+        ;(user as User) = result
       }
       return true
     },
 
     async jwt({ token, user }) {
       if (user) {
-        token.access_token = (user as any).access_token
-        token.refresh_token = (user as any).refresh_token
-        token.backendUser = (user as any).backendUser
+        token.access_token = (user as User).access_token
+        token.refresh_token = (user as User).refresh_token
+        token.backendUser = (user as User).backendUser
       }
       return token
     },
 
     async session({ session, token }) {
       if (token.access_token) {
-        ;(session as any).access_token = token.access_token
-        ;(session as any).refresh_token = token.refresh_token
+        session.access_token = token?.access_token as string
+        session.refresh_token = token.refresh_token as string
       }
       if (token.backendUser) {
-        (session as any).user = token.backendUser
+        session.user = token.backendUser as typeof session.user
       }
       // optional: fetch fresh profile from backend
-      if ((session as any).user && token.access_token) {
+      if (session.user && token.access_token) {
         const freshUser = await fetchLoggedProfile(token.access_token as string)
         if (freshUser) {
           session.user = { ...session.user, ...freshUser }
