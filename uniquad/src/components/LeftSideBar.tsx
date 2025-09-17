@@ -60,7 +60,7 @@ export default function LeftSideBar() {
           </div>
           
         <nav className="px-4 flex flex-col gap-2 mt-6">
-          {leftSideBarItems.map((item, idx) =>
+          {leftSideBarItems.map((item: any, idx: number) =>
             item.type === "divider" ? (
               <hr key={idx} className="my-2 border-gray-200 dark:border-gray-700" />
             ) : (
