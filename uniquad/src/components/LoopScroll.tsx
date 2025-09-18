@@ -150,7 +150,6 @@ const EventsFeed: React.FC = () => {
         <EventCard 
           key={event.id} 
           event={event} 
-          onLike={handleLike}
           onShare={handleAttend}
         onAttend={handleAttend}
         onBookmark={handleAttend}
