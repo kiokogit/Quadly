@@ -1,5 +1,5 @@
 // src/lib/auth.ts
-import { DefaultSession, NextAuthOptions, Session as NextAuthSession } from "next-auth"
+import { DefaultSession, NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import GithubProvider from "next-auth/providers/github"
 import FacebookProvider from "next-auth/providers/facebook"
@@ -136,7 +136,7 @@ export const authOptions: NextAuthOptions = {
   },
 
   callbacks: {
-    async signIn({ user, account, profile, credentials }) {
+    async signIn({ user, account, profile }) {
       // handle OAuth providers
       if (account && profile) {
         const result = await syncWithBackend({

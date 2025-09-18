@@ -7,7 +7,7 @@ import axiosInstance from '@/lib/api-client';
 
 const OnboardingFlow: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(true);
+  const isDarkMode = true
   const [formData, setFormData] = useState<any>({
     accountType: '',
     campus: '',
@@ -103,10 +103,15 @@ const OnboardingFlow: React.FC = () => {
   const handleSubmit = async() => {
     await axiosInstance.put('/users/profile/update-details', formData)
     .then(res => {
+      console.log(res)
       alert('Profile Updated successfuly')
       redirect('/home')
     })
-    .catch(err => alert('THere was an error updating data'))
+    .catch(err => {
+      alert('THere was an error updating data')
+      console.log(err)
+    }
+    )
   }
 
   const cardClasses = isDarkMode

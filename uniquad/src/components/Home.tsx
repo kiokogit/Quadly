@@ -1,6 +1,5 @@
 "use client"
-import { Users, Group, Calendar, Megaphone, MoreHorizontal} from "lucide-react"
-import { motion } from "framer-motion"
+import { Calendar, Megaphone, MoreHorizontal} from "lucide-react"
 import Link from "next/link"
 import { useSession } from "next-auth/react"
 

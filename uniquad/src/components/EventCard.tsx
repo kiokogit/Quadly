@@ -10,12 +10,7 @@ import {
   Share2,
   Clock,
   Star,
-  Heart,
   Bookmark,
-  ChevronRight,
-  CalendarPlus,
-  ExternalLink,
-  EyeIcon
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -48,18 +43,15 @@ interface Event {
 // EventCard Component
 const EventCard: React.FC<{ 
   event: Event; 
-  onLike: (id: string) => void; 
   onAttend: (id: string) => void;
   onBookmark: (id: string) => void;
   onShare: (id: string) => void;
 }> = ({ 
   event, 
-  onLike, 
   onAttend,
   onBookmark,
   onShare,
 }) => {
-  const [isLiked, setIsLiked] = useState(event.isLiked);
   const [isAttending, setIsAttending] = useState(event.isAttending);
   const [isBookmarked, setIsBookmarked] = useState(false);
 
@@ -145,11 +137,6 @@ const EventCard: React.FC<{
     }
   };
 
-  const handleLike = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsLiked(!isLiked);
-    onLike(event.id);
-  };
 
   const handleAttend = (e: React.MouseEvent) => {
     e.stopPropagation();

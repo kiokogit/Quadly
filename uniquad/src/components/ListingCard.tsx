@@ -1,9 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import {
-  User,
   MapPin,
-  Star,
   MoreHorizontal,
   MessageCircle,
   Share2,
@@ -12,10 +10,9 @@ import {
   Eye,
   Clock,
   ChevronRight,
-  VerifiedIcon
 } from "lucide-react";
 import Link from "next/link";
-import { BiCertification, BiCheckCircle } from "react-icons/bi";
+import { BiCheckCircle } from "react-icons/bi";
 
 export interface Product {
   id: string;
@@ -46,7 +43,6 @@ const ProductCard: React.FC<{
 }> = ({ 
   product, 
   onUpvote, 
-  onDownvote, 
   onBookmark, 
   onShare
 }) => {

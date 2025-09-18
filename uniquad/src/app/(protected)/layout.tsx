@@ -1,7 +1,6 @@
 "use client"
 
 import Navbar from "@/components/Navbar"
-import FloatingFab from "@/components/FloatingActionButton"
 import LeftSideBar from "@/components/LeftSideBar"
 
 export default function RootLayout({

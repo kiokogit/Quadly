@@ -15,6 +15,7 @@ export const fetchLoggedProfile = async(token: string) => {
         }
 
     } catch (err) {
+        console.log(err)
         return false
     }
 
@@ -34,6 +35,7 @@ export const fetchCampusesList = async(token: string) => {
         }
 
     } catch (err) {
+        console.log(err)
         return false
     }
 

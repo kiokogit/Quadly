@@ -16,7 +16,6 @@ import {
   Home,
   MessageSquare,
   CalendarHeartIcon,
-  ChevronRight,
   Settings2Icon,
 } from 'lucide-react'
 import { FaSearchengin, FaStarHalfAlt } from "react-icons/fa";
