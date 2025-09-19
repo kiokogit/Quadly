@@ -6,6 +6,7 @@ import FacebookProvider from "next-auth/providers/facebook"
 import CredentialsProvider from "next-auth/providers/credentials"
 import axios from "axios"
 import { fetchLoggedProfile } from "./api-calls"
+import axiosInstance from "./api-client"
 
 // src/types/auth.ts (or next-auth.d.ts)
 
@@ -65,7 +66,7 @@ interface Payload {
 // 👇 single backend sync function for all providers
 async function syncWithBackend(payload: Payload) {
   try {
-    const res = await axios.post("http://localhost:8000/auth-api/login/", payload)
+    const res = await axiosInstance.post("/auth-api/login/", payload)
 
     if (res.status === 200) {
       return {
