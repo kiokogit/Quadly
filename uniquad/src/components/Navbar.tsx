@@ -103,7 +103,7 @@ export default function Header() {
                       />
                     ) : (
                       <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center text-white font-semibold">
-                        {session.user?.first_name[0]}
+                        {session.user?.first_name}
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
