@@ -13,6 +13,10 @@ import {
   Bookmark,
 } from 'lucide-react';
 import Link from 'next/link';
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 // Event data structure
 interface Event {
@@ -21,20 +25,17 @@ interface Event {
   userName: string;
   userAvatar?: string;
   title: string;
-  description: string;
-  eventTime: Date;
-  endTime?: Date;
-  location: string;
+  content: string;
+  e_date: Date;
   venue?: string;
-  scope: 'public' | 'friends' | 'private';
+  location?: string
   imageUrl?: string;
-  likes: number;
-  comments: number;
-  attending: number;
-  createdAt: Date;
+  likes_count: number;
+  comments_count: number;
+  interested_count: number;
+  date_created: Date;
   isLiked: boolean;
   isAttending: boolean;
-  bookmarks: number;
   verified?: boolean;
   category?: string;
   maxAttendees?: number;
@@ -55,88 +56,6 @@ const EventCard: React.FC<{
   const [isAttending, setIsAttending] = useState(event.isAttending);
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-  const formatTime = (date: Date) => {
-    const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-    const diffInSeconds = Math.floor((Date.now() - date.getTime()) / 1000);
-
-    const divisions: { amount: number; name: Intl.RelativeTimeFormatUnit }[] = [
-      { amount: 60, name: "second" },
-      { amount: 60, name: "minute" },
-      { amount: 24, name: "hour" },
-      { amount: 7, name: "day" },
-      { amount: 4.34524, name: "week" },
-      { amount: 12, name: "month" },
-      { amount: Number.POSITIVE_INFINITY, name: "year" },
-    ];
-
-    let duration = Math.abs(diffInSeconds);
-    for (let i = 0; i < divisions.length; i++) {
-      const division = divisions[i];
-      if (duration < division.amount) {
-        return rtf.format(-Math.round(duration), division.name);
-      }
-      duration /= division.amount;
-    }
-  };
-
-  const formatEventDateTime = (date: Date, endDate?: Date) => {
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'short',
-      month: 'short', 
-      day: 'numeric',
-      hour: 'numeric',
-      minute: '2-digit'
-    };
-    
-    const startFormatted = date.toLocaleDateString('en-US', options);
-    
-    if (endDate) {
-      const endFormatted = endDate.toLocaleDateString('en-US', { 
-        hour: 'numeric', 
-        minute: '2-digit' 
-      });
-      return `${startFormatted} - ${endFormatted}`;
-    }
-    
-    return startFormatted;
-  };
-
-  const getEventStatus = () => {
-    const now = new Date();
-    const eventStart = event.eventTime;
-    const eventEnd = event.endTime || new Date(eventStart.getTime() + 2 * 60 * 60 * 1000); // Default 2 hours
-    
-    if (now > eventEnd) return { status: 'past', color: 'text-gray-500', bg: 'bg-gray-100 dark:bg-gray-800' };
-    if (now >= eventStart && now <= eventEnd) return { status: 'live', color: 'text-red-500', bg: 'bg-red-50 dark:bg-red-900/20' };
-    if (eventStart.getTime() - now.getTime() <= 24 * 60 * 60 * 1000) return { status: 'soon', color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-900/20' };
-    return { status: 'upcoming', color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20' };
-  };
-
-  const getScopeConfig = (scope: string) => {
-    switch (scope) {
-      case 'public':
-        return { 
-          color: 'text-green-600 bg-green-100 dark:text-green-400 dark:bg-green-900/30',
-          icon: '🌍'
-        };
-      case 'friends':
-        return { 
-          color: 'text-blue-600 bg-blue-100 dark:text-blue-400 dark:bg-blue-900/30',
-          icon: '👥'
-        };
-      case 'private':
-        return { 
-          color: 'text-purple-600 bg-purple-100 dark:text-purple-400 dark:bg-purple-900/30',
-          icon: '🔒'
-        };
-      default:
-        return { 
-          color: 'text-gray-600 bg-gray-100 dark:text-gray-300 dark:bg-gray-700',
-          icon: '📅'
-        };
-    }
-  };
-
 
   const handleAttend = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -154,9 +73,6 @@ const EventCard: React.FC<{
     e.stopPropagation();
     onShare(event.id);
   };
-
-  const eventStatus = getEventStatus();
-  const scopeConfig = getScopeConfig(event.scope);
 
   return (
     <div className=" pb-2 shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
@@ -186,7 +102,7 @@ const EventCard: React.FC<{
               </div>
               <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
                 <Clock className="w-3 h-3" />
-                <span>Posted {formatTime(event.createdAt)}</span>
+                <span>Posted {dayjs(event.date_created).fromNow()}</span>
               </div>
             </div>
           </div>
@@ -206,20 +122,7 @@ const EventCard: React.FC<{
           {/* Overlay Gradient */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           
-          {/* Status Badge */}
-          <div className={`absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-medium ${eventStatus.bg} ${eventStatus.color} backdrop-blur-sm`}>
-            {eventStatus.status === 'live' && '🔴 Live'}
-            {eventStatus.status === 'soon' && '⏰ Starting Soon'}
-            {eventStatus.status === 'upcoming' && '📅 Upcoming'}
-            {eventStatus.status === 'past' && '✅ Ended'}
-          </div>
-
-          {/* Scope Badge */}
-          <div className={`absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-medium ${scopeConfig.color} backdrop-blur-sm flex items-center space-x-1`}>
-            <span>{scopeConfig.icon}</span>
-            <span className="capitalize">{event.scope}</span>
-          </div>
-
+        
           {/* Bookmark Button */}
           <div className="absolute bottom-3 right-3">
             <button
@@ -249,7 +152,7 @@ const EventCard: React.FC<{
           </div>
           
           <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
-            {event.description}
+            {event.content}
           </p>
 
           {/* Event Details Grid */}
@@ -260,7 +163,7 @@ const EventCard: React.FC<{
               </div>
               <div>
                 <span className="font-medium text-gray-900 dark:text-gray-100">
-                  {formatEventDateTime(event.eventTime, event.endTime)}
+                  {dayjs(event.e_date).fromNow()}
                 </span>
               </div>
             </div>
@@ -289,7 +192,7 @@ const EventCard: React.FC<{
             
             <button className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors">
               <MessageCircle className="w-4 h-4" />
-              <span className="text-sm font-medium">{event.comments}</span>
+              <span className="text-sm font-medium">{event.comments_count}</span>
             </button>
 
             <button
@@ -307,7 +210,7 @@ const EventCard: React.FC<{
             >
               <>
                   <Users className="w-4 h-4" />
-                  <span className="text-sm">{event.attending} Interested</span>
+                  <span className="text-sm">{event.interested_count} Interested</span>
                 </>
               
             </button>

@@ -4,7 +4,6 @@ import GoogleProvider from "next-auth/providers/google"
 import GithubProvider from "next-auth/providers/github"
 import FacebookProvider from "next-auth/providers/facebook"
 import CredentialsProvider from "next-auth/providers/credentials"
-import axios from "axios"
 import { fetchLoggedProfile } from "./api-calls"
 import axiosInstance from "./api-client"
 
@@ -66,7 +65,7 @@ interface Payload {
 // 👇 single backend sync function for all providers
 async function syncWithBackend(payload: Payload) {
   try {
-    const res = await axiosInstance.post("/auth-api/login/", payload)
+    const res = await axiosInstance.post("/auth-app/login/", payload)
 
     if (res.status === 200) {
       return {
@@ -133,7 +132,7 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
 
   pages: {
-    signIn: "/", // your login page
+    signIn: "/",
   },
 
   callbacks: {

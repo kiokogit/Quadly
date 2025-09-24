@@ -8,7 +8,6 @@ const events = [
   { id: 1, title: "Hackathon 2025", date: "Sep 12", location: "Auditorium" },
   { id: 2, title: "Music Night", date: "Sep 15", location: "Campus Hall" },
   { id: 3, title: "Tech Talk", date: "Sep 20", location: "Library" },
-  { id: 3, title: "Tech Talk", date: "Sep 20", location: "Library" },
 ]
 
 const ads = [

@@ -1,5 +1,6 @@
 "use client"
 
+import axiosInstance from "@/lib/api-client"
 import { Calendar, MapPin, User, CalendarPlus, MapPinPlus, ImagePlusIcon } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
@@ -35,15 +36,13 @@ export default function NewEventBox() {
     setLocation(value)
   }
 
-  const handleSubmit = () => {
-    console.log({
-      text,
-      date,
-      location,
-      images,
+  const handleSubmit = async() => {
+    await axiosInstance.post('/events-management/events', {title:text, content: text, e_date: date, location: location, venue: location})
+    .then(res => {
+      alert('Success, event added successfully')
+      handleCancel()
     })
-    // TODO: submit logic
-    handleCancel()
+    .finally(() => console.log('final'))
   }
    const formatEventTime = (date: Date) => {
     return date.toLocaleDateString('en-US', {
@@ -144,7 +143,7 @@ export default function NewEventBox() {
           {activePopup === "date" && (
             <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 bg-gray-50 dark:bg-gray-800 mt-2">
               <input
-                type="datetime-local"
+                type="date"
                 value={date}
                 placeholder="Choose date & time"
                 onChange={(e) => handleDateChange(e.target.value)}

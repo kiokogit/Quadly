@@ -3,7 +3,7 @@ import axios from "axios";
 import { getSession, signOut } from "next-auth/react";
 
 const axiosInstance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_DJANGO_API_URL || "http://localhost:8000",
+  baseURL: `${process.env.NEXT_PUBLIC_DJANGO_API_URL || "http://localhost:8000"}`+`/${process.env.NEXT_PUBLIC_API_VERSION}`,
   headers: { "Content-Type": "application/json"},
 });
 

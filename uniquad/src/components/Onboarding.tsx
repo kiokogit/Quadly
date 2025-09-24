@@ -51,7 +51,7 @@ const OnboardingFlow: React.FC = () => {
   const [campuses, setCampuses] = useState<any[]>([])
 
   const getCampuses = async() => {
-     await axiosInstance.get('/users/campuses/all').then(res => {
+     await axiosInstance.get('/user-management/campuses/all').then(res => {
       setCampuses(res.data)
     })
      
@@ -101,17 +101,12 @@ const OnboardingFlow: React.FC = () => {
   };
 
   const handleSubmit = async() => {
-    await axiosInstance.put('/users/profile/update-details', formData)
+    await axiosInstance.put('/user-management/profile/update-details', formData)
     .then(res => {
       console.log(res)
-      alert('Profile Updated successfuly')
+      alert(res?.data.success)
       redirect('/home')
     })
-    .catch(err => {
-      alert('THere was an error updating data')
-      console.log(err)
-    }
-    )
   }
 
   const cardClasses = isDarkMode
