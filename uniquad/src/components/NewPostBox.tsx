@@ -5,12 +5,13 @@ import { Calendar, MapPin, User, CalendarPlus, MapPinPlus, ImagePlusIcon } from 
 import { useSession } from "next-auth/react"
 import { useState } from "react"
 
-export default function NewEventBox() {
+export default function NewEventBox({source, parent=null}:{source:string, parent: string | null}) {
   const { data: session } = useSession()
   const [date, setDate] = useState("")
   const [location, setLocation] = useState("")
   const [images, setImages] = useState<File[]>([])
   const [text, setText] = useState("")
+  const [title, setTitle] = useState("")
  // control which popup is open
   const [activePopup, setActivePopup] = useState<"date" | "location" | "image" | null>(null)
 
@@ -26,6 +27,7 @@ export default function NewEventBox() {
     setImages([])
     setDate("")
     setLocation("")
+    setTitle("")
   }
 
    const handleDateChange = (value: string) => {
@@ -37,9 +39,17 @@ export default function NewEventBox() {
   }
 
   const handleSubmit = async() => {
-    await axiosInstance.post('/events-management/events', {title:text, content: text, e_date: date, location: location, venue: location})
+    await axiosInstance.post('/events-management/events', {
+      title:title, 
+      content: text, 
+      e_date: date, 
+      location: location, 
+      venue: location,
+      created_by: session.user.id,
+      parent_post: parent
+    })
     .then(res => {
-      alert('Success, event added successfully')
+      alert('Success')
       handleCancel()
     })
     .finally(() => console.log('final'))
@@ -72,10 +82,16 @@ export default function NewEventBox() {
 
         {/* Input area */}
         <div className="flex-1 flex flex-col">
+          {source.toLowerCase() === 'event' && <input
+            placeholder="Event title"
+            className="w-full text-sm p-2 border border-gray-200 mb-1 dark:border-gray-800 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:text-gray-100"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          /> }
           {/* Event text */}
           <textarea
-            placeholder="Tell us, whats cooking?... 🎉"
-            className="w-full text-sm resize-none p-2 border border-gray-200 dark:border-gray-800 rounded-lg focus:ring-2 focus:ring-orange-500 focus:outline-none dark:text-gray-100"
+            placeholder="Describe it a little more... 🎉"
+            className="w-full text-sm resize-none p-2 border border-gray-200 dark:border-gray-800 focus:ring-2 focus:ring-orange-500 focus:outline-none dark:text-gray-100"
             rows={2}
             value={text}
             onChange={(e) => setText(e.target.value)}
@@ -111,20 +127,21 @@ export default function NewEventBox() {
 
           {/* Popup inputs */}
           {activePopup === "date" && (
-            <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 bg-gray-50 dark:bg-gray-800 mt-2">
+            <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 bg-gray-50 dark:bg-gray-800 mb-1">
               <input
                 type="date"
                 value={date}
                 placeholder="Choose date & time"
                 onChange={(e) => handleDateChange(e.target.value)}
                 onBlur={() => setActivePopup(null)}
+                autoFocus
                 className="focus:outline-none bg-transparent text-sm dark:text-gray-100 w-full"
               />
             </div>
           )}
 
           {activePopup === "location" && (
-            <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 bg-gray-50 dark:bg-gray-800 mt-2">
+            <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1 bg-gray-50 dark:bg-gray-800 mb-1">
               <input
                 type="text"
                 placeholder="Enter location..."
@@ -159,7 +176,7 @@ export default function NewEventBox() {
             </button>
 
             {/* Image upload icon */}
-            <div className="rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+            <label className="rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
               <ImagePlusIcon className="w-5 h-5" />
               <input
                 type="file"
@@ -167,7 +184,7 @@ export default function NewEventBox() {
                 onChange={handleImageChange}
                 className="hidden"
               />
-            </div>
+            </label>
           </div>
 
 

@@ -15,8 +15,16 @@ import {
 import Link from 'next/link';
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import axiosInstance from '@/lib/api-client';
+import NewEventBox from './NewPostBox';
 
 dayjs.extend(relativeTime)
+
+interface UserProfile {
+  first_name: string;
+  last_name: string;
+  avatar: string;
+}
 
 // Event data structure
 interface Event {
@@ -38,7 +46,7 @@ interface Event {
   isAttending: boolean;
   verified?: boolean;
   category?: string;
-  maxAttendees?: number;
+  created_by?: UserProfile;
 }
 
 // EventCard Component
@@ -55,6 +63,9 @@ const EventCard: React.FC<{
 }) => {
   const [isAttending, setIsAttending] = useState(event.isAttending);
   const [isBookmarked, setIsBookmarked] = useState(false);
+  const [addComment, setAddComment] = useState(false)
+
+  const [commentData, setCommentData] = useState<Event | null>(null)
 
 
   const handleAttend = (e: React.MouseEvent) => {
@@ -74,27 +85,28 @@ const EventCard: React.FC<{
     onShare(event.id);
   };
 
+
   return (
-    <div className=" pb-2 shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+    <div className="pb-2 border border-gray-100 dark:border-gray-800 overflow-hidden p-4 mb-2 mt-2 m-2 rounded-md">
       
         {/* Header with User Info */}
-        <div className="flex items-center justify-between p-2 mb-2 mt-2">
+        <div className="flex items-center justify-between pb-2">
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden border border-gray-400 flex items-center justify-center">
-              {event.userAvatar ? (
+            <div className="w-6 h-6 rounded-full overflow-hidden border border-gray-400 flex items-center justify-center">
+              {event.created_by ? (
                 <img 
-                  src={event.userAvatar} 
-                  alt={event.userName} 
+                  src={event.created_by?.avatar} 
+                  alt={event.created_by?.first_name} 
                   className="w-full h-full object-cover" 
                 />
               ) : (
-                <User className="w-6 h-6 text-gray-300" />
+                <User className="w-4 h-4 text-gray-300" />
               )}
             </div>
             <div className="flex flex-col">
               <div className="flex items-center space-x-2">
-                <span className="font-semibold text-sm text-gray-900 dark:text-gray-100">
-                  {event.userName}
+                <span className="font-semibold text-xs text-gray-900 dark:text-gray-100">
+                  {event.created_by?.first_name} {event.created_by?.last_name}
                 </span>
                 {event.verified && (
                   <Star className="w-3 h-3 text-blue-500 fill-blue-500" />
@@ -136,12 +148,12 @@ const EventCard: React.FC<{
       )}
 
       {/* Content Section */}
-      <div className="p-5">
+      <div className="">
 
         {/* Event Info */}
         <Link href={`/events/${event.id}`} className="mb-2">
-          <div className="flex items-start justify-between mb-3">
-            <h3 className="font-bold text-xl text-gray-900 dark:text-gray-100 line-clamp-2 flex-1">
+          <div className="flex items-start justify-between ">
+            <h3 className="font-bold text-base text-gray-900 dark:text-gray-100 line-clamp-2 flex-1">
               {event.title}
             </h3>
             {event.category && (
@@ -151,46 +163,41 @@ const EventCard: React.FC<{
             )}
           </div>
           
-          <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
+          <p className="text-gray-600 dark:text-gray-400 text-sm mb-2 line-clamp-3">
             {event.content}
           </p>
 
           {/* Event Details Grid */}
-          <div className="grid grid-cols-1 gap-3 mb-4">
-            <div className="flex items-center space-x-3 text-sm">
-              <div className="flex items-center justify-center w-8 h-8 bg-blue-100 dark:bg-blue-900/30 rounded-full">
-                <Calendar className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+          <div className="grid grid-cols-2 gap-3 mb-2">
+            <div className="flex items-center space-x-3 text-xs">
+              <div className="flex items-center justify-center w-5 h-5 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+                <Calendar className="w-3 h-3 text-blue-600 dark:text-blue-400" />
               </div>
-              <div>
+              <div className='flex flex-col'>
                 <span className="font-medium text-gray-900 dark:text-gray-100">
-                  {dayjs(event.e_date).fromNow()}
+                  {new Date(event.e_date).toDateString()} <i>({dayjs(event.e_date).fromNow()})</i>
                 </span>
+                
               </div>
             </div>
             
             <div className="flex items-center space-x-3 text-sm">
-              <div className="flex items-center justify-center w-8 h-8 bg-green-100 dark:bg-green-900/30 rounded-full">
-                <MapPin className="w-4 h-4 text-green-600 dark:text-green-400" />
+              <div className="flex items-center justify-center w-5 h-5 bg-green-100 dark:bg-green-900/30 rounded-full">
+                <MapPin className="w-3 h-3 text-green-600 dark:text-green-400" />
               </div>
               <div className="flex-1">
                 <span className="font-medium text-gray-900 dark:text-gray-100 block">
                   {event.location}
                 </span>
-                {event.venue && (
-                  <span className="text-gray-500 dark:text-gray-400 text-xs">
-                    {event.venue}
-                  </span>
-                )}
               </div>
             </div>
           </div>
         </Link>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-between pt-1 border-t border-gray-100 dark:border-gray-800">
+        <div className="flex items-center justify-between  border-t border-gray-100 dark:border-gray-800">
           <div className="flex items-center space-x-1">
-            
-            <button className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors">
+            <button onClick={() => setAddComment(!addComment)} className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors">
               <MessageCircle className="w-4 h-4" />
               <span className="text-sm font-medium">{event.comments_count}</span>
             </button>
@@ -208,21 +215,14 @@ const EventCard: React.FC<{
               onClick={handleAttend}
               className={`flex items-center space-x-2 font-medium `}
             >
-              <>
+            <>
                   <Users className="w-4 h-4" />
                   <span className="text-sm">{event.interested_count} Interested</span>
                 </>
-              
             </button>
-            
-            {/* <Link
-              href={`/events/${event.id}`}
-              className="flex items-center space-x-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full transition-colors"
-            >
-              <EyeIcon className="w-3 h-3" />
-            </Link> */}
           </div>
         </div>
+        {addComment && <NewEventBox source={'post'} parent={event.id}/>}
       </div>
     </div>
   );

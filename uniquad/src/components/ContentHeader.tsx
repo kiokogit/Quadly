@@ -20,9 +20,9 @@ export default function ContentHeader({welcomeMsg, newItemName}: {welcomeMsg: st
   }
 
   return (
-    <div className="md:border-b md:border-t md:border-r md:border-l border-gray-200 dark:border-gray-800 p-4 transition-shadow">
-      <div className="text-gray-600 dark:text-gray-400 mb-4 text-xs flex flex-row justify-between items-center">
-        <div>{welcomeMsg}</div>
+    <div className="border-gray-200 dark:border-gray-800 pl-4 pr-4 pt-4 pb-2 transition-shadow">
+      <div className="text-gray-600 dark:text-gray-400 mb-1 text-xs flex flex-row justify-between items-center">
+        <div className="font-bold">{welcomeMsg}</div>
         <div className="flex gap-2">
           <button
             onClick={() => {
@@ -40,13 +40,13 @@ export default function ContentHeader({welcomeMsg, newItemName}: {welcomeMsg: st
             }}
             className="px-2 py-1 text-xs rounded-lg border border-gray-300 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
           >
-            New {newItemName}
+          {showNewEvent ? "Cancel" : `New ${newItemName}`}
           </button>
         </div>
       </div>
 
       {showSearch && <SearchInput />}
-      {showNewEvent && <NewEventBox />}
+      {showNewEvent && <NewEventBox source={newItemName} parent={""}/>}
     </div>
   )
 }
