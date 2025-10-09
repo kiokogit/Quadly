@@ -13,7 +13,7 @@ const LandingPage: React.FC = () => {
     redirect("/home")
   }
 
-  return <ValuationIndexMap />
+  // return <ValuationIndexMap />
 
 
   return (
