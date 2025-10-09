@@ -2,6 +2,7 @@
 
 import AuthButtons from "@/components/AuthButtons"
 import Logo from "@/components/logo"
+import ValuationIndexMap from "@/components/MapLib"
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
 
@@ -11,6 +12,8 @@ const LandingPage: React.FC = () => {
   if (session) {
     redirect("/home")
   }
+
+  return <ValuationIndexMap />
 
 
   return (
