@@ -9,12 +9,10 @@ const OnboardingFlow: React.FC = () => {
   const [currentStep, setCurrentStep] = useState<number>(1);
   const isDarkMode = true
   const [formData, setFormData] = useState<any>({
-    accountType: '',
+    account_type: '',
     campus: '',
-    course: '',
-    yearOfStudy: '',
-    interests: [],
-    fullname: ''
+    bio: '',
+    interests: []
   });
 
   const totalSteps = 4;
@@ -28,21 +26,21 @@ const OnboardingFlow: React.FC = () => {
    
   const accountTypes = [
     {
-      id: 'student',
+      id: 'STUDENT',
       title: 'Student',
-      description: 'Connect with fellow students',
+      description: 'Discover life-changing events and products',
       icon: <Users className="w-6 h-6" />
     },
     {
-      id: 'premium',
-      title: 'Premium',
-      description: 'Enhanced features & benefits',
+      id: 'COMMUNITY',
+      title: 'Premium Community',
+      description: 'For the campus community, non-students',
       icon: <Star className="w-6 h-6" />
     },
     {
-      id: 'admin',
+      id: 'INTERNAL',
       title: 'Campus Admin',
-      description: 'Manage campus community',
+      description: 'Internal watchers',
       icon: <Shield className="w-6 h-6" />
     },
     
@@ -51,7 +49,7 @@ const OnboardingFlow: React.FC = () => {
   const [campuses, setCampuses] = useState<any[]>([])
 
   const getCampuses = async() => {
-     await axiosInstance.get('/user-management/campuses/all').then(res => {
+     await axiosInstance.get('/profiles/campuses').then(res => {
       setCampuses(res.data)
     })
      
@@ -86,7 +84,7 @@ const OnboardingFlow: React.FC = () => {
   };
 
   const handleAccountTypeSelect = (type: string) => {
-    setFormData({ ...formData, accountType: type });
+    setFormData({ ...formData, account_type: type });
   };
 
   const handleCampusSelect = (campus: string) => {
@@ -101,7 +99,7 @@ const OnboardingFlow: React.FC = () => {
   };
 
   const handleSubmit = async() => {
-    await axiosInstance.put('/user-management/profile/update-details', formData)
+    await axiosInstance.put('/profiles/me/', {...formData, interests: formData.interests.join(',')})
     .then(res => {
       console.log(res)
       alert(res?.data.success)
@@ -152,7 +150,7 @@ const OnboardingFlow: React.FC = () => {
                   key={type.id}
                   onClick={() => handleAccountTypeSelect(type.id)}
                   className={`w-full p-4 rounded-xl border-2 transition-all duration-200 ${
-                    formData.accountType === type.id
+                    formData.account_type === type.id
                       ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
                       : `${cardClasses} border-2 hover:border-orange-300`
                   }`}
@@ -238,24 +236,7 @@ const OnboardingFlow: React.FC = () => {
             <div className="space-y-4">
               <div>
                 <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Full Name 
-                </label>
-                <div className="relative">
-                  <BookOpen className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
-                  <input
-                    type="text"
-                    placeholder="e.g., John Doe"
-                    className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
-                      isDarkMode ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                    } focus:ring-2 focus:ring-orange-500 focus:border-transparent`}
-                    value={formData.fullname}
-                    onChange={(e) => setFormData({ ...formData, fullname: e.target.value })}
-                  />
-                </div>
-              </div>
-              <div>
-                <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  About you
+                  Bio
                 </label>
                 <div className="relative">
                   <BookOpen className={`absolute left-3 top-1/6 transform  w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
@@ -265,54 +246,11 @@ const OnboardingFlow: React.FC = () => {
                     className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
                       isDarkMode ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
                     } focus:ring-2 focus:ring-orange-500 focus:border-transparent`}
-                    value={formData.course}
-                    onChange={(e) => setFormData({ ...formData, course: e.target.value })}
+                    value={formData.bio}
+                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
                   />
                 </div>
               </div>
-
-              <div>
-                <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Year of Study
-                </label>
-                <div className="relative">
-                  <Calendar className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
-                  <select
-                    className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
-                      isDarkMode ? 'bg-gray-800 border-gray-600 text-white' : 'bg-white border-gray-300 text-gray-900'
-                    } focus:ring-2 focus:ring-orange-500 focus:border-transparent`}
-                    value={formData.yearOfStudy}
-                    onChange={(e) => setFormData({ ...formData, yearOfStudy: e.target.value })}
-                  >
-                    <option value="">Select year</option>
-                    <option value="1">1st Year</option>
-                    <option value="2">2nd Year</option>
-                    <option value="3">3rd Year</option>
-                    <option value="4">4th Year</option>
-                    <option value="5">5th Year</option>
-                    <option value="graduate">Graduate</option>
-                    <option value="postgraduate">Postgraduate</option>
-                  </select>
-                </div>
-              </div>
-{/* 
-              {formData.accountType === 'admin' && (
-                <div>
-                  <label className={`block text-sm font-medium mb-2 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                    Department/Role
-                  </label>
-                  <div className="relative">
-                    <GraduationCap className={`absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 ${isDarkMode ? 'text-gray-400' : 'text-gray-400'}`} />
-                    <input
-                      type="text"
-                      placeholder="e.g., Student Affairs"
-                      className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
-                        isDarkMode ? 'bg-gray-800 border-gray-600 text-white placeholder-gray-400' : 'bg-white border-gray-300 text-gray-900 placeholder-gray-500'
-                      } focus:ring-2 focus:ring-orange-500 focus:border-transparent`}
-                    />
-                  </div>
-                </div>
-              )} */}
             </div>
           </div>
         )}
@@ -376,11 +314,11 @@ const OnboardingFlow: React.FC = () => {
           <button
             onClick={currentStep === totalSteps ? handleSubmit:handleNext}
             disabled={
-              (currentStep === 1 && !formData.accountType) ||
+              (currentStep === 1 && !formData.account_type) ||
               (currentStep === 2 && !formData.campus)
             }
             className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 ${
-              ((currentStep === 1 && !formData.accountType) ||
+              ((currentStep === 1 && !formData.account_type) ||
                (currentStep === 2 && !formData.campus))
                 ? 'opacity-50 cursor-not-allowed bg-orange-300'
                 : 'bg-orange-500 hover:bg-orange-600 text-white transform hover:scale-105'

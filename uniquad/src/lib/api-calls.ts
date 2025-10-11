@@ -4,7 +4,7 @@ import axiosInstance from "./api-client"
 // Get user profile
 export const fetchLoggedProfile = async(token: string) => {
     try{
-        const {data, status} = await axiosInstance.get('/user-management/profile/me', {
+        const {data, status} = await axiosInstance.get('/profiles/me/', {
       headers: {
         Authorization: `Bearer ${token}`,
       }})
@@ -24,7 +24,7 @@ export const fetchLoggedProfile = async(token: string) => {
 
 export const fetchCampusesList = async(token: string) => {
     try{
-        const {data, status} = await axiosInstance.get('/user-management/campuses/list', {
+        const {data, status} = await axiosInstance.get('/profiles/campuses/', {
       headers: {
         Authorization: `Bearer ${token}`,
       }})

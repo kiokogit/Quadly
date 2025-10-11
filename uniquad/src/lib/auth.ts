@@ -35,7 +35,7 @@ declare module "next-auth" {
     user: {
       id: string
       avatar: string
-      campus?: string
+      campus?: {initials: string, id: string}
       first_name: string
       last_name: string
     } & DefaultSession["user"]
@@ -65,7 +65,7 @@ interface Payload {
 // 👇 single backend sync function for all providers
 async function syncWithBackend(payload: Payload) {
   try {
-    const res = await axiosInstance.post("/auth-app/login/", payload)
+    const res = await axiosInstance.post("/accounts/login/", payload)
 
     if (res.status === 200) {
       return {
@@ -106,7 +106,7 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null
         const result = await syncWithBackend({
-          email: credentials.email,
+          username_or_email: credentials.email,
           password: credentials.password,
           provider: "credentials"
         })

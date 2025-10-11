@@ -5,7 +5,7 @@ declare module "next-auth" {
     user: {
       id: string
       avatar: string
-      campus?: string
+      campus?: {initials: string, id: string}
       first_name: string
       last_name: string
     } & DefaultSession["user"]
