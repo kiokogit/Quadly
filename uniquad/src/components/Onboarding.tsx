@@ -10,7 +10,7 @@ const OnboardingFlow: React.FC = () => {
   const isDarkMode = true
   const [formData, setFormData] = useState<any>({
     account_type: '',
-    campus: '',
+    campus_id: '',
     bio: '',
     interests: []
   });
@@ -88,7 +88,7 @@ const OnboardingFlow: React.FC = () => {
   };
 
   const handleCampusSelect = (campus: string) => {
-    setFormData({ ...formData, campus: campus });
+    setFormData({ ...formData, campus_id: campus });
   };
 
   const handleInterestToggle = (interest: string) => {
@@ -192,7 +192,7 @@ const OnboardingFlow: React.FC = () => {
                   key={campus.id}
                   onClick={() => handleCampusSelect(campus.id)}
                   className={`w-full p-4 rounded-xl border-2 transition-all duration-200 ${
-                    formData.campus === campus.id
+                    formData.campus_id === campus.id
                       ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
                       : `${cardClasses} border-2 hover:border-orange-300`
                   }`}
@@ -200,7 +200,7 @@ const OnboardingFlow: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <div className={`p-2 rounded-lg ${
-                        formData.campus === campus.id 
+                        formData.campus_id === campus.id 
                           ? 'bg-orange-500 text-white' 
                           : `${isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-600'}`
                       }`}>
