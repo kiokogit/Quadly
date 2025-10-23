@@ -130,7 +130,7 @@ const EventCard: React.FC<{
             )}
           </div>
           
-          <p className="text-gray-600 dark:text-gray-400 text-sm mb-2 line-clamp-3">
+          <p className="text-gray-600 dark:text-gray-400 text-sm mb-2 whitespace-pre-wrap">
             {event.text}
           </p>
 
