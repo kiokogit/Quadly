@@ -81,7 +81,7 @@ const EventCard: React.FC<{
               </div>
               <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
                 <Clock className="w-3 h-3" />
-                <span>Posted {dayjs(event.date_created).fromNow()}</span>
+                <span>Posted {dayjs(event.created_at).fromNow()}</span>
               </div>
             </div>
           </div>

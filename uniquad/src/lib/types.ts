@@ -27,6 +27,7 @@ interface Event {
   comments_count: number;
   interested_count: number;
   date_created: Date;
+  created_at: Date;
   isLiked: boolean;
   isAttending: boolean;
   verified?: boolean;
