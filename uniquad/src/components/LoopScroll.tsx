@@ -2,8 +2,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import EventCard from '@/components/EventCard';
 import axiosInstance from '@/lib/api-client';
-import { Event } from '@/lib/types';
-import { campusEvents } from '@/lib/randData';
+import { getAllEventsPostsEndpoint } from '@/lib/endpoints';
 
 
 // EventsFeed Component
@@ -15,7 +14,7 @@ const EventsFeed: React.FC = () => {
 
   const getEvents = async() => {
     setLoading(true)
-    await axiosInstance.get('/events-management/events')
+    await axiosInstance.get(getAllEventsPostsEndpoint)
     .then(res => setEvents(res.data))
     .finally(() => setLoading(false))
   }

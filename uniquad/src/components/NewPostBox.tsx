@@ -1,6 +1,7 @@
 "use client"
 
 import axiosInstance from "@/lib/api-client"
+import { createPostEndpoint } from "@/lib/endpoints"
 import { Calendar, MapPin, User, CalendarPlus, MapPinPlus, ImagePlusIcon } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
@@ -39,14 +40,12 @@ export default function NewEventBox({source, parent=null}:{source:string, parent
   }
 
   const handleSubmit = async() => {
-    await axiosInstance.post('/events-management/events', {
+    await axiosInstance.post(createPostEndpoint, {
       title:title, 
-      content: text, 
-      e_date: date, 
-      location: location, 
-      venue: location,
-      created_by: session.user.id,
-      parent_post: parent
+      text: text, 
+      conversation_id: parent,
+      data: {date, location, venue:location},
+      author_id: session.user.id,
     })
     .then(res => {
       alert('Success')

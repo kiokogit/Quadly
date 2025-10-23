@@ -1,11 +1,24 @@
+
+interface UserProfile {
+  first_name: string;
+  last_name: string;
+  avatar: string;
+}
+
+interface EventExtraData {
+  e_date: Date;
+  location: string;
+}
+
 // Event data structure
-export interface Event {
+interface Event {
   id: string;
   userId: string;
   userName: string;
   userAvatar?: string;
   title: string;
-  content: string;
+  text: string;
+  data: EventExtraData;
   e_date: Date;
   venue?: string;
   location?: string
@@ -18,5 +31,5 @@ export interface Event {
   isAttending: boolean;
   verified?: boolean;
   category?: string;
-  maxAttendees?: number;
+  created_by?: UserProfile;
 }

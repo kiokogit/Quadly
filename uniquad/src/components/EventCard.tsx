@@ -15,39 +15,9 @@ import {
 import Link from 'next/link';
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import axiosInstance from '@/lib/api-client';
 import NewEventBox from './NewPostBox';
 
 dayjs.extend(relativeTime)
-
-interface UserProfile {
-  first_name: string;
-  last_name: string;
-  avatar: string;
-}
-
-// Event data structure
-interface Event {
-  id: string;
-  userId: string;
-  userName: string;
-  userAvatar?: string;
-  title: string;
-  content: string;
-  e_date: Date;
-  venue?: string;
-  location?: string
-  imageUrl?: string;
-  likes_count: number;
-  comments_count: number;
-  interested_count: number;
-  date_created: Date;
-  isLiked: boolean;
-  isAttending: boolean;
-  verified?: boolean;
-  category?: string;
-  created_by?: UserProfile;
-}
 
 // EventCard Component
 const EventCard: React.FC<{ 
@@ -64,9 +34,6 @@ const EventCard: React.FC<{
   const [isAttending, setIsAttending] = useState(event.isAttending);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [addComment, setAddComment] = useState(false)
-
-  const [commentData, setCommentData] = useState<Event | null>(null)
-
 
   const handleAttend = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -164,22 +131,24 @@ const EventCard: React.FC<{
           </div>
           
           <p className="text-gray-600 dark:text-gray-400 text-sm mb-2 line-clamp-3">
-            {event.content}
+            {event.text}
           </p>
 
           {/* Event Details Grid */}
           <div className="grid grid-cols-2 gap-3 mb-2">
+            {event.data?.e_date && 
             <div className="flex items-center space-x-3 text-xs">
               <div className="flex items-center justify-center w-5 h-5 bg-blue-100 dark:bg-blue-900/30 rounded-full">
                 <Calendar className="w-3 h-3 text-blue-600 dark:text-blue-400" />
               </div>
               <div className='flex flex-col'>
                 <span className="font-medium text-gray-900 dark:text-gray-100">
-                  {new Date(event.e_date).toDateString()} <i>({dayjs(event.e_date).fromNow()})</i>
+                  {new Date(event.data?.e_date).toDateString()} <i>({dayjs(event.data?.e_date).fromNow()})</i>
                 </span>
                 
               </div>
-            </div>
+            </div>}
+            {event.data?.location && 
             
             <div className="flex items-center space-x-3 text-sm">
               <div className="flex items-center justify-center w-5 h-5 bg-green-100 dark:bg-green-900/30 rounded-full">
@@ -187,10 +156,10 @@ const EventCard: React.FC<{
               </div>
               <div className="flex-1">
                 <span className="font-medium text-gray-900 dark:text-gray-100 block">
-                  {event.location}
+                  {event.data?.location}
                 </span>
               </div>
-            </div>
+            </div>}
           </div>
         </Link>
 
@@ -199,7 +168,7 @@ const EventCard: React.FC<{
           <div className="flex items-center space-x-1">
             <button onClick={() => setAddComment(!addComment)} className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors">
               <MessageCircle className="w-4 h-4" />
-              <span className="text-sm font-medium">{event.comments_count}</span>
+              <span className="text-sm font-medium">{event.comments_count || 0}</span>
             </button>
 
             <button
@@ -217,7 +186,7 @@ const EventCard: React.FC<{
             >
             <>
                   <Users className="w-4 h-4" />
-                  <span className="text-sm">{event.interested_count} Interested</span>
+                  <span className="text-sm">{event.interested_count || 0} Interested</span>
                 </>
             </button>
           </div>

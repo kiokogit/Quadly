@@ -42,7 +42,7 @@ const LandingPage: React.FC = () => {
           className="px-6 py-2 bg-orange-600 text-white rounded-full font-semibold hover:bg-orange-700 transition-colors text-sm"
         >
           Get Started
-        </button> town
+        </button>
       </nav>
 
       {/* Hero Section */}
