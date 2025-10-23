@@ -43,7 +43,7 @@ export default function NewEventBox({source, parent=null}:{source:string, parent
     await axiosInstance.post(createPostEndpoint, {
       title:title, 
       text: text, 
-      conversation_id: parent,
+      // conversation_id: null,
       data: {date, location, venue:location},
       author_id: session.user.id,
     })

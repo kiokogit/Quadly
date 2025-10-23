@@ -58,7 +58,7 @@ const LandingPage: React.FC = () => {
             <button 
               onClick={() => router.push("/authentication")}
               className="px-8 py-4 bg-orange-600 text-white rounded-full font-semibold hover:bg-orange-700 transition-all transform hover:scale-105 shadow-lg">
-              Continue on Web town
+              Continue on Web
             </button>
             <button className="px-8 py-4 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center justify-center gap-2">
               <span>Download App</span>
@@ -71,7 +71,7 @@ const LandingPage: React.FC = () => {
             src="https://cdni.iconscout.com/illustration/premium/thumb/students-talking-to-each-other-illustration-svg-png-download-5979483.png"
             alt="Community connection"
             className="w-full h-auto drop-shadow-2xl"
-          /> town
+          />
           <div className="absolute -bottom-4 -left-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 animate-pulse">
             <p className="text-sm text-gray-600 dark:text-gray-300">🎉 New event in your area!</p>
           </div>
