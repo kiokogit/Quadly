@@ -16,6 +16,7 @@ import Link from 'next/link';
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import NewEventBox from './NewPostBox';
+import { BiUpvote } from 'react-icons/bi';
 
 dayjs.extend(relativeTime)
 
@@ -166,17 +167,21 @@ const EventCard: React.FC<{
         {/* Action Buttons */}
         <div className="flex items-center justify-between  border-t border-gray-100 dark:border-gray-800">
           <div className="flex items-center space-x-1">
-            <button onClick={() => setAddComment(!addComment)} className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors">
+           
+
+             <button
+              onClick={handleShare}
+              className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
+            >
+              <BiUpvote className="w-4 h-4" />
+               <span className="text-sm">{event.interested_count || 0}</span>
+            </button>
+
+             <button onClick={() => setAddComment(!addComment)} className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors">
               <MessageCircle className="w-4 h-4" />
               <span className="text-sm font-medium">{event.comments_count || 0}</span>
             </button>
 
-            <button
-              onClick={handleShare}
-              className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
-            >
-              <Share2 className="w-4 h-4" />
-            </button>
           </div>
 
           <div className="flex items-center space-x-2">
@@ -188,6 +193,12 @@ const EventCard: React.FC<{
                   <Users className="w-4 h-4" />
                   <span className="text-sm">{event.interested_count || 0} Interested</span>
                 </>
+            </button>
+            <button
+              onClick={handleShare}
+              className="flex items-center space-x-1 px-3 py-2 rounded-full text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-800 transition-colors"
+            >
+              <Share2 className="w-4 h-4" />
             </button>
           </div>
         </div>
