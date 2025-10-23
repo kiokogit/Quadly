@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import EventCard from '@/components/EventCard';
 import axiosInstance from '@/lib/api-client';
 import { Event } from '@/lib/types';
+import { campusEvents } from '@/lib/randData';
 
 
 // EventsFeed Component
@@ -21,6 +22,7 @@ const EventsFeed: React.FC = () => {
    
   useEffect(() => {
     getEvents()
+    // setEvents(campusEvents)
   }, []);
 
 
