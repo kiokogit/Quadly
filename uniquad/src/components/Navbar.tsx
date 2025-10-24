@@ -63,8 +63,7 @@ export default function Header() {
   return (
     <header className="fixed z-30 w-full ">
       <div className="mx-auto max-w-lg">
-         {/* Site branding with dropdown */}
-          <div className="flex flex-col pt-2 bg-white/90 dark:bg-gray-900/90 px-4 shadow-lg shadow-black/[0.03] backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(var(--color-gray-100),var(--color-gray-200))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] dark:before:[background:linear-gradient(var(--color-gray-800),var(--color-gray-700))_border-box]">
+          <div className="flex flex-col pt-2 bg-white/90 dark:bg-gray-900/90 px-4 shadow-black/[0.03] backdrop-blur-xs before:pointer-events-none before:absolute before:inset-0 before:rounded-[inherit] before:border before:border-transparent before:[background:linear-gradient(var(--color-gray-100),var(--color-gray-200))_border-box] before:[mask-composite:exclude_!important] before:[mask:linear-gradient(white_0_0)_padding-box,_linear-gradient(white_0_0)] dark:before:[background:linear-gradient(var(--color-gray-800),var(--color-gray-700))_border-box]">
           <div className="relative flex h-8 items-center justify-between">
             
           <div className="relative text-gray-700 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-400" ref={dropdownRef}>
@@ -77,7 +76,6 @@ export default function Header() {
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               className="flex md:hidden items-center  cursor-pointer md:cursor-normal hover:bg-transparent rounded-lg transition-colors scale-100 "
             >
-              
               <Logo />
               <ChevronDown 
                   size={16} 
@@ -184,18 +182,17 @@ export default function Header() {
           </div>
         <div className="relative flex h-14 items-center justify-between">
           
-          {/* Desktop nav */}
           <ul className="flex-1 items-center justify-between gap-3 md:gap-8 flex text-xs md:text-sm font-semibold">
             {generalNavLinks.map((item, index) => {
-                   return <Link
-                          key={index}
-                          href={item.href || "#"}
-                          className={`text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors relative pb-1 `}>
-                                <div className={`${pathname === item.href ? 'text-orange-600':''} flex flex-col items-center`}>
-                                  {item.icon && <item.icon size={16} />}
-                                   <span className="text-xs">{item.label}</span>
-                                </div>
-                        </Link>
+              return <Link
+                    key={index}
+                    href={item.href || "#"}
+                    className={`text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 transition-colors relative pb-1 `}>
+                          <div className={`${pathname === item.href ? 'text-orange-400':''} flex flex-col items-center`}>
+                            {item.icon && <item.icon size={16} />}
+                              <span className="text-xs">{item.label}</span>
+                          </div>
+                  </Link>
               })}
           </ul>
 

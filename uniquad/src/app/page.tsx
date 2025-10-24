@@ -55,14 +55,15 @@ const LandingPage: React.FC = () => {
             Connect with your local community, share events, discover what's happening around you, and stay in touch with people who matter most.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
+            
+            <button className="px-8 py-4 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center justify-center gap-2">
+              <span>Download App</span>
+              <span className="text-xs bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-300 px-2 py-1 rounded-full">Coming Soon</span>
+            </button>
             <button 
               onClick={() => router.push("/authentication")}
               className="px-8 py-4 bg-orange-600 text-white rounded-full font-semibold hover:bg-orange-700 transition-all transform hover:scale-105 shadow-lg">
               Continue on Web
-            </button>
-            <button className="px-8 py-4 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center justify-center gap-2">
-              <span>Download App</span>
-              <span className="text-xs bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-300 px-2 py-1 rounded-full">Coming Soon</span>
             </button>
           </div>
         </div>
@@ -79,7 +80,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-orange-600 text-white py-16">
+      <section className="bg-gray-50 dark:bg-gray-800 text-white py-16">
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, index) => (

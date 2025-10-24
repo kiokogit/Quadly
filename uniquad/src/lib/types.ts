@@ -8,29 +8,47 @@ interface UserProfile {
 interface EventExtraData {
   e_date: Date;
   location: string;
+  venue: string
 }
 
 // Event data structure
 interface Event {
   id: string;
-  userId: string;
-  userName: string;
-  userAvatar?: string;
   title: string;
   text: string;
   data: EventExtraData;
-  e_date: Date;
-  venue?: string;
-  location?: string
-  imageUrl?: string;
-  likes_count: number;
-  comments_count: number;
-  interested_count: number;
-  date_created: Date;
-  created_at: Date;
-  isLiked: boolean;
-  isAttending: boolean;
-  verified?: boolean;
+  author_id: string;
+  likes_count?: number;
+  comments_count?: number;
+  interested_count?: number;
+  created_at?: Date;
   category?: string;
-  created_by?: UserProfile;
+  created_by?: UserProfile
+
 }
+
+
+interface LoaderState {
+  loading: boolean
+  message?: string
+  showLoader: (msg?: string) => void
+  hideLoader: () => void
+}
+
+interface EventPayload {
+   title: string;
+  text: string;
+  data: EventExtraData;
+  author_id: string
+}
+
+
+interface EventsState {
+  events: Event[]
+  error?: string
+
+  fetchEvents: () => Promise<void>
+  addEvent: (newEvent: EventPayload) => Promise<void>
+}
+
+

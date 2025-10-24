@@ -7,6 +7,8 @@ import Logo from "@/components/logo"
 import axiosInstance from "@/lib/api-client"
 import { getCampusesEndpoint } from "@/lib/endpoints"
 
+import { useLoaderStore } from "@/stores/genericStores"
+
 type AuthTab = "signin" | "register"
 type AccountType = "minor" | "standard" | "premium" | "super"
 
@@ -19,6 +21,8 @@ interface Community {
 }
 
 const AuthenticationPage: React.FC = () => {
+
+  const { showLoader, hideLoader } = useLoaderStore()
   const router = useRouter()
   const [activeTab, setActiveTab] = useState<AuthTab>("signin")
   const [selectedAccountType, setSelectedAccountType] = useState<AccountType>("standard")
@@ -36,14 +40,6 @@ const AuthenticationPage: React.FC = () => {
 
   const [communities, setCommunities] = useState<Community[]>([])
 
-//   const communities: Community[] = [
-//     { id: "unilag", name: "University of Lagos", requiresApproval: false, members: "12.5K" },
-//     { id: "amish", name: "The Amish Community", requiresApproval: true, members: "3.2K" },
-//     { id: "naivasha", name: "Naivasha Town", requiresApproval: false, members: "8.7K" },
-//     { id: "usiani", name: "Usiani Location", requiresApproval: false, members: "5.4K" },
-//     { id: "westlands", name: "Westlands, Nairobi", requiresApproval: false, members: "15.2K" },
-//     { id: "kisumu", name: "Kisumu City Center", requiresApproval: false, members: "9.8K" },
-//   ]
 
   const fetchCampuses = async() => {
     await axiosInstance.get(getCampusesEndpoint)
@@ -51,7 +47,9 @@ const AuthenticationPage: React.FC = () => {
   }
 
   useEffect(() => {
-    fetchCampuses()
+    if (activeTab === 'register') {
+      fetchCampuses()
+    }
   }, [])
 
   const accountTypes = [
@@ -94,12 +92,13 @@ const AuthenticationPage: React.FC = () => {
   }
 
   const handleSocialSignIn = (provider: string) => {
-    signIn(provider, { callbackUrl: "/home" })
+    showLoader('')
+    signIn(provider, { callbackUrl: "/home" }).finally(() => hideLoader())
   }
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle sign in logic
+    showLoader('')
     const result = await signIn("credentials", {
       email: formData.email,
       password: formData.password,
@@ -109,6 +108,7 @@ const AuthenticationPage: React.FC = () => {
     if (result?.ok) {
       router.push("/home")
     }
+    hideLoader()
   }
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -119,6 +119,11 @@ const AuthenticationPage: React.FC = () => {
       accountType: selectedAccountType,
       community: selectedCommunity,
     })
+  }
+
+  const handleSocialRegister = (provider: string) => {
+    showLoader('')
+    signIn(provider, { callbackUrl: "/home" }).finally(() => hideLoader())
   }
 
   const selectedCommunityData = communities?.find(c => c.id === selectedCommunity)
@@ -144,7 +149,7 @@ const AuthenticationPage: React.FC = () => {
         <div className=" dark:bg-gray-800 rounded-3xl shadow-md bg-white overflow-hidden">
           <div className="grid md:grid-cols-2 ">
             {/* Left side - Branding */}
-            <div className="hidden md:flex bg-gradient-to-br from-orange-500 to-gray-600 p-12 text-white flex flex-col justify-center relative overflow-hidden">
+            <div className="hidden md:flex bg-gray-900 p-12 text-white flex flex-col justify-center relative overflow-hidden">
               <div className="absolute inset-0 opacity-10">
                 <div className="absolute top-0 left-0 w-64 h-64 bg-white rounded-full -translate-x-1/2 -translate-y-1/2"></div>
                 <div className="absolute bottom-0 right-0 w-96 h-96 bg-white rounded-full translate-x-1/2 translate-y-1/2"></div>

@@ -23,39 +23,23 @@ dayjs.extend(relativeTime)
 // EventCard Component
 const EventCard: React.FC<{ 
   event: Event; 
-  onAttend: (id: string) => void;
-  onBookmark: (id: string) => void;
-  onShare: (id: string) => void;
 }> = ({ 
-  event, 
-  onAttend,
-  onBookmark,
-  onShare,
+  event
 }) => {
-  const [isAttending, setIsAttending] = useState(event.isAttending);
-  const [isBookmarked, setIsBookmarked] = useState(false);
   const [addComment, setAddComment] = useState(false)
 
   const handleAttend = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsAttending(!isAttending);
-    onAttend(event.id);
   };
 
-  const handleBookmark = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setIsBookmarked(!isBookmarked);
-    onBookmark(event.id);
-  };
 
   const handleShare = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onShare(event.id);
   };
 
 
   return (
-    <div className="pb-2 border border-gray-100 dark:border-gray-800 overflow-hidden p-4 mb-2 mt-2 m-2 rounded-md">
+    <div className="pb-2 border border-gray-100 dark:border-gray-800 overflow-hidden p-4 mb-2 mt-2 rounded-md">
       
         {/* Header with User Info */}
         <div className="flex items-center justify-between pb-2">
@@ -76,9 +60,9 @@ const EventCard: React.FC<{
                 <span className="font-semibold text-xs text-gray-900 dark:text-gray-100">
                   {event.created_by?.first_name} {event.created_by?.last_name}
                 </span>
-                {event.verified && (
+                {/* {event.verified && (
                   <Star className="w-3 h-3 text-blue-500 fill-blue-500" />
-                )}
+                )} */}
               </div>
               <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
                 <Clock className="w-3 h-3" />
@@ -90,31 +74,7 @@ const EventCard: React.FC<{
             <MoreHorizontal className="w-5 h-5 text-gray-500 dark:text-gray-400" />
           </button>
         </div>
-      {/* Event Image with Overlay Info */}
-      {event.imageUrl && (
-        <div className="relative overflow-hidden">
-          <img 
-            src={event.imageUrl} 
-            alt={event.title}
-            className="w-full max-h-64 object-cover"
-          />
-          
-          {/* Overlay Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-          
-        
-          {/* Bookmark Button */}
-          <div className="absolute bottom-3 right-3">
-            <button
-              onClick={handleBookmark}
-              className="bg-black/20 backdrop-blur-sm rounded-full p-2 text-white hover:scale-110 transition-transform"
-            >
-              <Bookmark className={`w-4 h-4 ${isBookmarked ? 'fill-white' : ''}`} />
-            </button>
-          </div>
-        </div>
-      )}
-
+      
       {/* Content Section */}
       <div className="">
 
@@ -202,7 +162,7 @@ const EventCard: React.FC<{
             </button>
           </div>
         </div>
-        {addComment && <NewEventBox source={'post'} parent={event.id}/>}
+        {addComment && <NewEventBox source={'post'} parent={event.id} setShowNewEvent={() => setAddComment(false)}/>}
       </div>
     </div>
   );

@@ -1,12 +1,13 @@
 "use client"
 
-import axiosInstance from "@/lib/api-client"
-import { createPostEndpoint } from "@/lib/endpoints"
+import { useEventsStore } from "@/stores/postsStore"
 import { Calendar, MapPin, User, CalendarPlus, MapPinPlus, ImagePlusIcon } from "lucide-react"
 import { useSession } from "next-auth/react"
 import { useState } from "react"
 
-export default function NewEventBox({source, parent=null}:{source:string, parent: string | null}) {
+export default function NewEventBox({source, setShowNewEvent, parent=null}:{source:string, setShowNewEvent: () => void, parent: string | null}) {
+  const { addEvent} = useEventsStore()
+  
   const { data: session } = useSession()
   const [date, setDate] = useState("")
   const [location, setLocation] = useState("")
@@ -40,19 +41,18 @@ export default function NewEventBox({source, parent=null}:{source:string, parent
   }
 
   const handleSubmit = async() => {
-    await axiosInstance.post(createPostEndpoint, {
+    await addEvent({
       title:title, 
       text: text, 
       // conversation_id: null,
-      data: {date, location, venue:location},
+      data: {e_date: new Date(date), location, venue:location},
       author_id: session.user.id,
-    })
-    .then(res => {
-      alert('Success')
+    }).finally(() =>{
       handleCancel()
-    })
-    .finally(() => console.log('final'))
+      setShowNewEvent()
+  })
   }
+
    const formatEventTime = (date: Date) => {
     return date.toLocaleDateString('en-US', {
       weekday: 'short',
