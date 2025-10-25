@@ -56,14 +56,19 @@ const LandingPage: React.FC = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             
-            <button className="px-8 py-4 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center justify-center gap-2">
+            <button className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white rounded-full font-semibold hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors flex items-center justify-center gap-2">
               <span>Download App</span>
               <span className="text-xs bg-orange-100 dark:bg-orange-900 text-orange-600 dark:text-orange-300 px-2 py-1 rounded-full">Coming Soon</span>
             </button>
             <button 
               onClick={() => router.push("/authentication")}
-              className="px-8 py-4 bg-orange-600 text-white rounded-full font-semibold hover:bg-orange-700 transition-all transform hover:scale-105 shadow-lg">
+              className="px-4 py-2 bg-orange-600 text-white rounded-full font-semibold hover:bg-orange-700 transition-all transform hover:scale-105 shadow-lg">
               Continue on Web
+            </button>
+            <button 
+              onClick={() => router.push("/ocr_project")}
+              className="px-4 py-2 bg-blue-600 text-white rounded-full font-semibold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg">
+              OCR Project
             </button>
           </div>
         </div>
